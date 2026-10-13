@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import emailjs from '@emailjs/browser'
 import { useTheme } from '../contexts/ThemeContext'
 
 const Contact = () => {
@@ -13,6 +14,8 @@ const Contact = () => {
     message: ''
   })
   const [submitted, setSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
@@ -31,12 +34,31 @@ const Contact = () => {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Here you would typically send the form data to a backend
-    console.log('Form submitted:', formData)
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 3000)
+
+    const { VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY } = import.meta.env
+    if (!VITE_EMAILJS_SERVICE_ID || !VITE_EMAILJS_TEMPLATE_ID || !VITE_EMAILJS_PUBLIC_KEY) {
+      setSubmitError('Booking email is not configured yet. Please contact us by WhatsApp or email.')
+      return
+    }
+
+    setIsSubmitting(true)
+    setSubmitError('')
+    try {
+      await emailjs.sendForm(
+        VITE_EMAILJS_SERVICE_ID,
+        VITE_EMAILJS_TEMPLATE_ID,
+        e.currentTarget,
+        { publicKey: VITE_EMAILJS_PUBLIC_KEY }
+      )
+      setSubmitted(true)
+      setFormData({ name: '', email: '', phone: '', eventType: '', date: '', message: '' })
+    } catch {
+      setSubmitError('Your booking request could not be sent. Please try again or contact us by WhatsApp.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const whatsappNumber = '0712299634' // Replace with actual WhatsApp number
@@ -351,6 +373,11 @@ const Contact = () => {
                 borderRadius: '8px',
                 border: `1px solid ${theme.colors.border}`
               }}>
+                {submitError && (
+                  <p role="alert" style={{ color: '#c0392b', marginBottom: '1rem' }}>
+                    {submitError}
+                  </p>
+                )}
                 <div style={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -577,6 +604,7 @@ const Contact = () => {
 
                 <motion.button
                   type="submit"
+                  disabled={isSubmitting}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   style={{
@@ -588,13 +616,14 @@ const Contact = () => {
                     borderRadius: '4px',
                     fontSize: '1.1rem',
                     fontWeight: '600',
-                    cursor: 'pointer',
+                    cursor: isSubmitting ? 'wait' : 'pointer',
+                    opacity: isSubmitting ? 0.7 : 1,
                     transition: 'all 0.3s ease',
                     textTransform: 'uppercase',
                     letterSpacing: '1px'
                   }}
                 >
-                  Submit Booking Request
+                  {isSubmitting ? 'Sending Request…' : 'Submit Booking Request'}
                 </motion.button>
               </form>
             )}

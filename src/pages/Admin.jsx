@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../contexts/ThemeContext'
+import { getUploadedPhotos, saveUploadedPhotos } from '../utils/galleryStorage'
 
 const Admin = () => {
   const theme = useTheme()
@@ -9,7 +10,7 @@ const Admin = () => {
     category: '',
     isFavorite: false
   })
-  const [uploadedPhotos, setUploadedPhotos] = useState([])
+  const [uploadedPhotos, setUploadedPhotos] = useState(getUploadedPhotos)
   const [previewUrl, setPreviewUrl] = useState(null)
 
   const categories = ['Portrait', 'Wedding', 'Nature', 'Event', 'Fashion', 'Landscape']
@@ -42,7 +43,14 @@ const Admin = () => {
       date: new Date().toLocaleDateString()
     }
 
-    setUploadedPhotos([...uploadedPhotos, newPhoto])
+    const updatedPhotos = [newPhoto, ...uploadedPhotos]
+    try {
+      saveUploadedPhotos(updatedPhotos)
+      setUploadedPhotos(updatedPhotos)
+    } catch {
+      alert('This photo is too large to save in this browser. Try a smaller image.')
+      return
+    }
     setUploadData({ title: '', category: '', isFavorite: false })
     setPreviewUrl(null)
     
@@ -52,7 +60,9 @@ const Admin = () => {
   }
 
   const deletePhoto = (id) => {
-    setUploadedPhotos(uploadedPhotos.filter(photo => photo.id !== id))
+    const updatedPhotos = uploadedPhotos.filter(photo => photo.id !== id)
+    saveUploadedPhotos(updatedPhotos)
+    setUploadedPhotos(updatedPhotos)
   }
 
   return (

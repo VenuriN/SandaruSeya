@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../contexts/ThemeContext'
+import { getUploadedPhotos } from '../utils/galleryStorage'
 
 const Gallery = () => {
   const theme = useTheme()
@@ -10,7 +11,7 @@ const Gallery = () => {
   const categories = ['All', 'Portrait', 'Wedding', 'Nature', 'Event', 'Fashion', 'Landscape']
 
   // Sample gallery photos
-  const allPhotos = [
+  const samplePhotos = [
     { id: 1, url: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=800', title: 'Portrait Excellence', category: 'Portrait', isFavorite: true },
     { id: 2, url: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800', title: 'Wedding Moments', category: 'Wedding', isFavorite: true },
     { id: 3, url: 'https://images.unsplash.com/photo-1471341971476-ae15ff5dd4ea?w=800', title: 'Natural Beauty', category: 'Nature', isFavorite: false },
@@ -24,6 +25,8 @@ const Gallery = () => {
     { id: 11, url: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=800', title: 'Runway', category: 'Fashion', isFavorite: true },
     { id: 12, url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800', title: 'Mountain View', category: 'Landscape', isFavorite: false }
   ]
+
+  const allPhotos = [...getUploadedPhotos(), ...samplePhotos]
 
   const stories = [
     { id: 1, url: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400', title: 'Wedding Story', date: '2024' },
