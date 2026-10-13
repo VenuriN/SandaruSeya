@@ -126,13 +126,14 @@ const Contact = () => {
                   width: '42px',
                   height: '42px',
                   borderRadius: '50%',
-                  backgroundColor: '#ffffff',
+                  backgroundColor: theme.isDark ? '#050505' : '#FFFFFF',
+                  border: theme.isDark ? '1px solid #555555' : '1px solid #E0E0E0',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   overflow: 'hidden'
                 }}>
-                  <img src="/contact icon/gps.png" alt="Location" width="42" height="42" style={{ filter: 'brightness(0) sepia(1) saturate(100%) hue-rotate(10deg)' }} />
+                  <img src="/contact icon/gps.png" alt="Location" width="42" height="42" style={{ filter: theme.isDark ? 'brightness(0) invert(1)' : 'brightness(0)' }} />
                 </div>
                 <div>
                   <div style={{
@@ -164,13 +165,14 @@ const Contact = () => {
                   width: '42px',
                   height: '42px',
                   borderRadius: '50%',
-                  backgroundColor: '#ffffff',
+                  backgroundColor: theme.isDark ? '#050505' : '#FFFFFF',
+                  border: theme.isDark ? '1px solid #555555' : '1px solid #E0E0E0',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   overflow: 'hidden'
                 }}>
-                  <img src="/contact icon/email.png" alt="Email" width="42" height="42" style={{ filter: 'brightness(0) sepia(1) saturate(100%) hue-rotate(10deg)' }} />
+                  <img src="/contact icon/email.png" alt="Email" width="42" height="42" style={{ filter: theme.isDark ? 'brightness(0) invert(1)' : 'brightness(0)' }} />
                 </div>
                 <div>
                   <div style={{
@@ -202,13 +204,14 @@ const Contact = () => {
                   width: '42px',
                   height: '42px',
                   borderRadius: '50%',
-                  backgroundColor: '#ffffff',
+                  backgroundColor: theme.isDark ? '#050505' : '#FFFFFF',
+                  border: theme.isDark ? '1px solid #555555' : '1px solid #E0E0E0',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   overflow: 'hidden'
                 }}>
-                  <img src="/contact icon/call.png" alt="Phone" width="42" height="42" style={{ filter: 'brightness(0) sepia(1) saturate(100%) hue-rotate(10deg)' }} />
+                  <img src="/contact icon/call.png" alt="Phone" width="42" height="42" style={{ filter: theme.isDark ? 'brightness(0) invert(1)' : 'brightness(0)' }} />
                 </div>
                 <div>
                   <div style={{
@@ -236,25 +239,26 @@ const Contact = () => {
               href={whatsappLink}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05, backgroundColor: '#25D366', color: '#FFFFFF', borderColor: '#25D366' }}
               whileTap={{ scale: 0.95 }}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.75rem',
                 padding: '1rem 2rem',
-                backgroundColor: '#25D366',
-                color: '#FFFFFF',
+                backgroundColor: theme.colors.surface,
+                color: theme.colors.text,
                 textDecoration: 'none',
                 fontSize: '1.1rem',
                 fontWeight: '600',
                 borderRadius: '8px',
                 transition: 'all 0.3s ease',
-                border: 'none',
-                cursor: 'pointer'
+                border: '1px solid rgba(37, 211, 102, 0.55)',
+                cursor: 'pointer',
+                boxShadow: '0 4px 16px rgba(37, 211, 102, 0.12)'
               }}
             >
-              <img src="/contact icon/whatsapp.png" alt="WhatsApp" width="24" height="24" />
+              <img src="/contact icon/whatsapp.png" alt="" width="24" height="24" aria-hidden="true" />
               Chat on WhatsApp
             </motion.a>
 
@@ -279,17 +283,24 @@ const Contact = () => {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.1 }}
                   style={{
-                    width: '45px',
-                    height: '45px',
+                    width: '48px',
+                    height: '48px',
                     borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    color: theme.colors.text,
+                    backgroundColor: theme.isDark ? '#1A1A1A' : '#FFFFFF',
+                    border: `1px solid ${theme.colors.border}`,
                     textDecoration: 'none',
                     transition: 'all 0.3s ease'
                   }}
                 >
-                  <img src="/contact icon/instagram.png" alt="Instagram" width="45" height="45" style={{ borderRadius: '50%' }} />
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="5" />
+                    <circle cx="12" cy="12" r="4" />
+                    <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                  </svg>
                 </motion.a>
 
                 {/* Facebook */}
@@ -299,17 +310,22 @@ const Contact = () => {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.1 }}
                   style={{
-                    width: '45px',
-                    height: '45px',
+                    width: '48px',
+                    height: '48px',
                     borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    color: theme.colors.text,
+                    backgroundColor: theme.isDark ? '#1A1A1A' : '#FFFFFF',
+                    border: `1px solid ${theme.colors.border}`,
                     textDecoration: 'none',
                     transition: 'all 0.3s ease'
                   }}
                 >
-                  <img src="/contact icon/facebook (2).png" alt="Facebook" width="45" height="45" style={{ borderRadius: '50%' }} />
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M13.5 21v-8.2h2.8l.4-3.2h-3.2V7.5c0-.9.3-1.6 1.6-1.6h1.7V3.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.3H7.3v3.2h2.8V21h3.4Z" />
+                  </svg>
                 </motion.a>
 
                 {/* TikTok */}
@@ -319,17 +335,22 @@ const Contact = () => {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.1 }}
                   style={{
-                    width: '45px',
-                    height: '45px',
+                    width: '48px',
+                    height: '48px',
                     borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    color: theme.colors.text,
+                    backgroundColor: theme.isDark ? '#1A1A1A' : '#FFFFFF',
+                    border: `1px solid ${theme.colors.border}`,
                     textDecoration: 'none',
                     transition: 'all 0.3s ease'
                   }}
                 >
-                  <img src="/contact icon/tik-tok.png" alt="TikTok" width="45" height="45" style={{ borderRadius: '50%' }} />
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M19.6 7.1a6 6 0 0 1-3.7-1.3v8.1a5.8 5.8 0 1 1-5-5.7v3.2a2.7 2.7 0 1 0 1.9 2.5V2.5h3.1c.2 2 1.6 3.6 3.7 3.9v.7Z" />
+                  </svg>
                 </motion.a>
               </div>
             </div>
@@ -364,7 +385,7 @@ const Contact = () => {
                   fontWeight: '600'
                 }}
               >
-                ✓ Thank you! Your booking request has been submitted. I'll get back to you soon.
+                âœ“ Thank you! Your booking request has been submitted. I'll get back to you soon.
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} style={{
@@ -605,25 +626,34 @@ const Contact = () => {
                 <motion.button
                   type="submit"
                   disabled={isSubmitting}
-                  whileHover={{ scale: 1.02 }}
+                  whileHover={{ scale: 1.02, boxShadow: '0 12px 28px rgba(201, 169, 98, 0.32)' }}
                   whileTap={{ scale: 0.98 }}
                   style={{
                     width: '100%',
-                    padding: '1rem 2rem',
-                    backgroundColor: theme.colors.accent,
-                    color: theme.isDark ? '#000000' : '#FFFFFF',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.65rem',
+                    padding: '1.1rem 2rem',
+                    background: 'linear-gradient(135deg, #D9BC78, #C29B4D)',
+                    color: '#17140D',
                     border: 'none',
-                    borderRadius: '4px',
-                    fontSize: '1.1rem',
-                    fontWeight: '600',
+                    borderRadius: '6px',
+                    fontSize: '1.05rem',
+                    fontWeight: '700',
                     cursor: isSubmitting ? 'wait' : 'pointer',
-                    opacity: isSubmitting ? 0.7 : 1,
-                    transition: 'all 0.3s ease',
-                    textTransform: 'uppercase',
-                    letterSpacing: '1px'
+                    opacity: isSubmitting ? 0.75 : 1,
+                    transition: 'box-shadow 0.25s ease, transform 0.25s ease',
+                    letterSpacing: '0.01em',
+                    boxShadow: '0 5px 16px rgba(201, 169, 98, 0.2)'
                   }}
                 >
-                  {isSubmitting ? 'Sending Request…' : 'Submit Booking Request'}
+                  {isSubmitting ? 'Sending Request…' : "Let's Plan Your Session"}
+                  {!isSubmitting && (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                  )}
                 </motion.button>
               </form>
             )}
