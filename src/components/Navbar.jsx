@@ -6,10 +6,23 @@ const Navbar = () => {
   const theme = useTheme()
   const location = useLocation()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const nextThemeLabel = theme.isDark ? 'Switch to light mode' : 'Switch to dark mode'
+
+  const ThemeIcon = () => theme.isDark ? (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" />
+    </svg>
+  ) : (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z" />
+    </svg>
+  )
 
   const navLinks = [
     { path: '/', label: 'Home' },
     { path: '/gallery', label: 'Gallery' },
+    { path: '/services', label: 'Services' },
     { path: '/about', label: 'About' },
     { path: '/contact', label: 'Contact' },
     // { path: '/admin', label: 'Admin' }
@@ -22,7 +35,8 @@ const Navbar = () => {
       left: 0,
       right: 0,
       zIndex: 1000,
-      padding: '1.5rem 3rem',
+      height: '80px',
+      padding: '1rem 3rem',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -71,19 +85,24 @@ const Navbar = () => {
         ))}
         <button
           onClick={theme.toggleTheme}
+          type="button"
+          aria-label={nextThemeLabel}
+          title={nextThemeLabel}
           style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: theme.colors.accent,
-            color: theme.isDark ? '#000000' : '#FFFFFF',
-            border: 'none',
-            borderRadius: '4px',
+            display: 'grid',
+            placeItems: 'center',
+            width: '42px',
+            height: '42px',
+            padding: 0,
+            backgroundColor: 'transparent',
+            color: theme.colors.text,
+            border: `1px solid ${theme.colors.border}`,
+            borderRadius: '50%',
             cursor: 'pointer',
-            fontSize: '0.9rem',
-            fontWeight: '600',
-            transition: 'all 0.3s ease'
+            transition: 'color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease'
           }}
         >
-          {theme.isDark ? '☀️ Light' : '🌙 Dark'}
+          <ThemeIcon />
         </button>
       </div>
 
@@ -153,19 +172,26 @@ const Navbar = () => {
           ))}
           <button
             onClick={theme.toggleTheme}
+            type="button"
+            aria-label={nextThemeLabel}
+            title={nextThemeLabel}
             style={{
-              padding: '0.75rem 1.5rem',
-              backgroundColor: theme.colors.accent,
-              color: theme.isDark ? '#000000' : '#FFFFFF',
-              border: 'none',
-              borderRadius: '4px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '42px',
+              height: '42px',
+              padding: 0,
+              backgroundColor: 'transparent',
+              color: theme.colors.text,
+              border: `1px solid ${theme.colors.border}`,
+              borderRadius: '50%',
               cursor: 'pointer',
-              fontSize: '1rem',
-              fontWeight: '600',
-              alignSelf: 'flex-start'
+              alignSelf: 'flex-start',
+              transition: 'color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease'
             }}
           >
-            {theme.isDark ? '☀️ Light' : '🌙 Dark'}
+            <ThemeIcon />
           </button>
         </div>
       )}

@@ -32,8 +32,8 @@ const About = () => {
               marginBottom: '1.5rem',
               lineHeight: 1.2
             }}>
-              Every Frame Holds a Feeling.<br />
-              <span style={{ color: theme.colors.accent }}>The Art of Seeing. The Beauty of Feeling.</span>
+              Don't let your memories fade...<br />
+              <span style={{ color: theme.colors.accent }}>We capture your memories forever...</span>
             </h1>
             <p style={{
               fontSize: '1.2rem',
@@ -52,16 +52,16 @@ const About = () => {
               position: 'relative',
               borderRadius: '8px',
               overflow: 'hidden',
-              aspectRatio: '4/5',
               maxHeight: '75vh'
             }}
           >
             <img
-              src="/phtographer.jpg" width="800" alt="Pasindu Sandaruwan"
+              src="/phtographer-cutout.png" width="800" alt="Pasindu Sandaruwan"
               style={{
                 width: '100%',
-                height: '100%',
-                objectFit: 'cover'
+                height: 'auto',
+                maxHeight: '75vh',
+                objectFit: 'contain'
               }}
             />
             <div style={{
@@ -70,8 +70,8 @@ const About = () => {
               left: 0,
               right: 0,
               padding: '2rem',
-              background: 'linear-gradient(transparent, rgba(0,0,0,0.8))',
-              color: '#FFFFFF'
+              color: '#FFFFFF',
+              textShadow: '0 2px 10px rgba(0, 0, 0, 0.9)'
             }}>
               <div style={{ fontSize: '1.5rem', fontWeight: '600' }}>Pasindu Sandaruwan</div>
               <div style={{ fontSize: '1rem', opacity: 0.9 }}>Professional Photographer</div>
@@ -81,125 +81,46 @@ const About = () => {
 
         {/* My Story */}
         <motion.div
+          className="about-story"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
           style={{
-            backgroundColor: theme.colors.surface,
-            padding: '3rem',
-            borderRadius: '8px',
-            marginBottom: '4rem'
+            width: '100vw',
+            marginInline: 'calc(50% - 50vw)',
+            minHeight: 'calc(100vh - 80px)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            background: `linear-gradient(135deg, ${theme.colors.surface}, ${theme.colors.background})`,
+            borderTop: `1px solid ${theme.colors.border}`,
+            borderBottom: `1px solid ${theme.colors.border}`,
+            padding: '5rem max(2rem, calc((100vw - 1100px) / 2))',
+            marginBottom: '4rem',
+            position: 'relative',
+            overflow: 'hidden'
           }}
         >
-          <h2 style={{
-            fontSize: '2rem',
-            fontWeight: '500',
-            color: theme.colors.text,
-            marginBottom: '1.5rem'
-          }}>
-            My Story
-          </h2>
-          <p style={{
-            fontSize: '1.1rem',
-            color: theme.colors.textSecondary,
-            lineHeight: 1.8,
-            marginBottom: '1.5rem'
-          }}>
-            Photography is more than what I do; it's how I see the world, tell stories, and preserve the emotions that make every moment unforgettable.<br></br>
-            My journey began over adda footer for this years ago with a passion for capturing the beauty in life's fleeting moments. Since then, I've dedicated myself to mastering the art of photography, exploring the interplay of light, emotion, and composition to create images that speak beyond words.<br></br>
-            As the photographer behind Sandaru Seya Photography, I believe every story deserves to be told beautifully. Whether it's the quiet intimacy of a portrait, the magic of a wedding, or the energy of a special celebration, my goal is to capture every detail with creativity, authenticity, and an artistic touch, turning moments into timeless memories you'll treasure for years to come.
-          </p>
-          
-        </motion.div>
+          <div className="about-story__layout">
+            <div className="about-story__intro">
+              <span className="about-story__eyebrow" style={{ color: theme.colors.accent }}>01 / THE STORY</span>
+              <h2 style={{ color: theme.colors.text }}>My <em style={{ color: theme.colors.accent }}>Story</em></h2>
+              <p className="about-story__lead" style={{ color: theme.colors.textSecondary }}>
+                Photography is more than what I do; it&apos;s how I see the world, tell stories, and preserve the emotions that make every moment unforgettable.
+              </p>
+            </div>
 
-        {/* Services */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-        >
-          <h2 style={{
-            fontSize: '2rem',
-            fontWeight: '500',
-            color: theme.colors.text,
-            marginBottom: '2rem'
-          }}>
-            Services
-          </h2>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '2rem'
-          }}>
-            {[
-              {
-                title: 'Portrait Photography',
-                description: 'Professional portraits that capture your unique personality and style. Perfect for individuals, couples, and families.',
-                icon: '📸'
-              },
-              {
-                title: 'Wedding Photography',
-                description: 'Comprehensive wedding coverage from preparation to reception, documenting every special moment of your big day.',
-                icon: '💒'
-              },
-              {
-                title: 'Event Photography',
-                description: 'Corporate events, parties, and celebrations captured with a professional touch and attention to detail.',
-                icon: '🎉'
-              },
-              {
-                title: 'Fashion Photography',
-                description: 'Creative fashion shoots for portfolios, lookbooks, and brand campaigns with artistic vision.',
-                icon: '👗'
-              },
-              {
-                title: 'Nature & Landscape',
-                description: 'Stunning nature and landscape photography that captures the beauty of the world around us.',
-                icon: '🌄'
-              },
-              {
-                title: 'Commercial Photography',
-                description: 'Product and commercial photography for businesses, brands, and marketing materials.',
-                icon: '🏢'
-              }
-            ].map((service, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 + index * 0.1 }}
-                whileHover={{ y: -5 }}
-                style={{
-                  backgroundColor: theme.colors.surface,
-                  padding: '2rem',
-                  borderRadius: '8px',
-                  border: `1px solid ${theme.colors.border}`,
-                  transition: 'all 0.3s ease'
-                }}
-              >
-                <div style={{
-                  fontSize: '3rem',
-                  marginBottom: '1rem'
-                }}>
-                  {service.icon}
-                </div>
-                <h3 style={{
-                  fontSize: '1.3rem',
-                  fontWeight: '600',
-                  color: theme.colors.text,
-                  marginBottom: '0.75rem'
-                }}>
-                  {service.title}
-                </h3>
-                <p style={{
-                  fontSize: '1rem',
-                  color: theme.colors.textSecondary,
-                  lineHeight: 1.6
-                }}>
-                  {service.description}
-                </p>
-              </motion.div>
-            ))}
+            <div className="about-story__copy" style={{ color: theme.colors.textSecondary }}>
+              <p>
+                My journey began years ago with a passion for capturing the beauty in life&apos;s fleeting moments. Since then, I&apos;ve dedicated myself to mastering the art of photography, exploring the interplay of light, emotion, and composition to create images that speak beyond words.
+              </p>
+              <blockquote style={{ borderLeftColor: theme.colors.accent, color: theme.colors.text }}>
+                “Every story deserves to be told beautifully.”
+              </blockquote>
+              <p>
+                As the photographer behind Sandaru Seya Photography, I believe this deeply. Whether it&apos;s the quiet intimacy of a portrait, the magic of a wedding, or the energy of a special celebration, my goal is to capture every detail with creativity, authenticity, and an artistic touch, turning moments into timeless memories you&apos;ll treasure for years to come.
+              </p>
+            </div>
           </div>
         </motion.div>
       </div>

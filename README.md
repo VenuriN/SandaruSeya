@@ -8,3 +8,10 @@
 4. Restart the Vite development server after changing environment variables.
 
 The EmailJS public key and IDs are used in the browser. Do not put an EmailJS private key or other secrets in `VITE_` variables.
+
+## Admin login setup
+
+1. Create a Supabase project and copy its Project URL and publishable key from the project API settings.
+2. Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` to `.env.local`, then restart Vite.
+3. In Supabase Auth settings, turn off new user sign-ups. Create your admin email/password user from the Supabase dashboard.
+4. Open `/admin` and sign in with that email and password. The email address is the username.

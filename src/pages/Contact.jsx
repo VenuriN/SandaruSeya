@@ -314,7 +314,7 @@ const Contact = () => {
 
                 {/* TikTok */}
                 <motion.a
-                  href="https://www.tiktok.com/@pasindusandaruwan"
+                  href="https://www.tiktok.com/@sandaru_seya?_r=1&_t=ZS-9AWevw1NJkv"
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.1 }}

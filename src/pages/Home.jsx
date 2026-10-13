@@ -50,7 +50,7 @@ const Home = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % photos.length)
-    }, 5000)
+    }, 20000)
     return () => clearInterval(interval)
   }, [photos.length])
 
@@ -69,7 +69,7 @@ const Home = () => {
       paddingTop: '80px'
     }}>
       {/* Hero Section with Full Screen Slideshow */}
-      <div style={{
+      <div className="home-hero" style={{
         position: 'relative',
         width: '100%',
         height: 'calc(100vh - 80px)',
@@ -78,10 +78,17 @@ const Home = () => {
         <AnimatePresence mode='wait'>
           <motion.div
             key={currentIndex}
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 1.5, ease: 'easeInOut' }}
+            initial={{ opacity: 0, scale: 1 }}
+            animate={{ opacity: 1, scale: [1, 1.1, 1] }}
+            exit={{ opacity: 0 }}
+            transition={{
+              opacity: { duration: 1 },
+              scale: {
+                duration: 20,
+                times: [0, 0.5, 1],
+                ease: ['easeInOut', 'easeInOut']
+              }
+            }}
             style={{
               position: 'absolute',
               inset: 0,
@@ -89,13 +96,7 @@ const Home = () => {
               backgroundSize: 'cover',
               backgroundPosition: 'center'
             }}
-          >
-            <div style={{
-              position: 'absolute',
-              inset: 0,
-              backgroundColor: 'rgba(0, 0, 0, 0.3)'
-            }} />
-          </motion.div>
+          />
         </AnimatePresence>
 
         {/* Photo Info Overlay */}
@@ -108,6 +109,7 @@ const Home = () => {
             bottom: '15%',
             left: '10%',
             color: '#FFFFFF',
+            textShadow: '0 2px 14px rgba(0, 0, 0, 0.85)',
             zIndex: 10
           }}
         >
@@ -166,12 +168,14 @@ const Home = () => {
 
         {/* Navigation Arrows */}
         <button
+          className="home-slide-arrow home-slide-arrow--previous"
+          type="button"
+          aria-label="Previous photo"
           onClick={prevPhoto}
           style={{
             position: 'absolute',
             left: '2rem',
-            top: '50%',
-            transform: 'translateY(-50%)',
+            bottom: '2rem',
             backgroundColor: 'rgba(255, 255, 255, 0.2)',
             color: '#FFFFFF',
             border: 'none',
@@ -193,12 +197,14 @@ const Home = () => {
         </button>
 
         <button
+          className="home-slide-arrow home-slide-arrow--next"
+          type="button"
+          aria-label="Next photo"
           onClick={nextPhoto}
           style={{
             position: 'absolute',
             right: '2rem',
-            top: '50%',
-            transform: 'translateY(-50%)',
+            bottom: '2rem',
             backgroundColor: 'rgba(255, 255, 255, 0.2)',
             color: '#FFFFFF',
             border: 'none',
