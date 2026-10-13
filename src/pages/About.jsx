@@ -9,7 +9,7 @@ const About = () => {
       minHeight: '100vh',
       backgroundColor: theme.colors.background,
       paddingTop: '120px',
-      paddingBottom: '4rem'
+      paddingBottom: 0
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
         {/* Hero Section */}
@@ -50,13 +50,12 @@ const About = () => {
             transition={{ delay: 0.3 }}
             style={{
               position: 'relative',
-              borderRadius: '8px',
               overflow: 'hidden',
               maxHeight: '75vh'
             }}
           >
             <img
-              src="/phtographer-cutout.png" width="800" alt="Pasindu Sandaruwan"
+              src="/phtographer.jpg" width="800" alt="Pasindu Sandaruwan"
               style={{
                 width: '100%',
                 height: 'auto',
@@ -69,12 +68,15 @@ const About = () => {
               bottom: 0,
               left: 0,
               right: 0,
-              padding: '2rem',
-              color: '#FFFFFF',
-              textShadow: '0 2px 10px rgba(0, 0, 0, 0.9)'
+              padding: '5rem 2rem 1.5rem',
+              background: theme.isDark
+                ? 'linear-gradient(transparent, rgba(0, 0, 0, 0.82))'
+                : 'linear-gradient(transparent, rgba(250, 250, 245, 0.96))',
+              color: theme.colors.text,
+              textShadow: theme.isDark ? '0 2px 10px rgba(0, 0, 0, 0.9)' : 'none'
             }}>
               <div style={{ fontSize: '1.5rem', fontWeight: '600' }}>Pasindu Sandaruwan</div>
-              <div style={{ fontSize: '1rem', opacity: 0.9 }}>Professional Photographer</div>
+              <div style={{ fontSize: '1rem', color: theme.colors.textSecondary }}>Professional Photographer</div>
             </div>
           </motion.div>
         </motion.div>
@@ -96,7 +98,7 @@ const About = () => {
             borderTop: `1px solid ${theme.colors.border}`,
             borderBottom: `1px solid ${theme.colors.border}`,
             padding: '5rem max(2rem, calc((100vw - 1100px) / 2))',
-            marginBottom: '4rem',
+            marginBottom: 0,
             position: 'relative',
             overflow: 'hidden'
           }}

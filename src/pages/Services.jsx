@@ -19,7 +19,7 @@ const Services = () => {
     <main className="services-page" style={{ backgroundColor: theme.colors.background, color: theme.colors.text }}>
       <div className="services-page__inner">
         <motion.header className="services-page__header" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <span style={{ color: theme.colors.accent }}>WHAT I OFFER</span>
+          <span style={{ color: theme.colors.accent }}>WHAT WE OFFER</span>
           <h1 style={{ color: theme.colors.text }}>Photography <em style={{ color: theme.colors.accent }}>Services</em></h1>
           <p style={{ color: theme.colors.textSecondary }}>Thoughtful photography for the people, celebrations, and stories you want to remember.</p>
         </motion.header>

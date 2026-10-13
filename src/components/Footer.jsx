@@ -28,7 +28,7 @@ const Footer = () => {
             />
           </Link>
           <p style={{ color: colors.textSecondary }}>
-            Capturing the moments you&apos;ll want to remember.
+            Don't let your memories fade. <br></br>We capture your memories forever.
           </p>
         </div>
 
