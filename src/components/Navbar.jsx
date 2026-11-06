@@ -22,6 +22,7 @@ const Navbar = () => {
   const navLinks = [
     { path: '/', label: 'Home' },
     { path: '/gallery', label: 'Gallery' },
+    { path: '/art-and-you', label: 'Arts & You' },
     { path: '/services', label: 'Services' },
     { path: '/about', label: 'About' },
     { path: '/contact', label: 'Contact' },
@@ -72,10 +73,10 @@ const Navbar = () => {
             key={link.path}
             to={link.path}
             style={{
-              color: location.pathname === link.path ? theme.colors.accent : theme.colors.text,
+              color: (location.pathname + location.search) === link.path || location.pathname === link.path ? theme.colors.accent : theme.colors.text,
               textDecoration: 'none',
               fontSize: '1rem',
-              fontWeight: location.pathname === link.path ? '600' : '400',
+              fontWeight: (location.pathname + location.search) === link.path || location.pathname === link.path ? '600' : '400',
               transition: 'color 0.3s ease',
               letterSpacing: '1px'
             }}
@@ -160,10 +161,10 @@ const Navbar = () => {
               to={link.path}
               onClick={() => setIsMobileMenuOpen(false)}
               style={{
-                color: location.pathname === link.path ? theme.colors.accent : theme.colors.text,
+                color: (location.pathname + location.search) === link.path || location.pathname === link.path ? theme.colors.accent : theme.colors.text,
                 textDecoration: 'none',
                 fontSize: '1.2rem',
-                fontWeight: location.pathname === link.path ? '600' : '400',
+                fontWeight: (location.pathname + location.search) === link.path || location.pathname === link.path ? '600' : '400',
                 padding: '0.5rem 0'
               }}
             >

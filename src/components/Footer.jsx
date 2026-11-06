@@ -48,7 +48,7 @@ const Footer = () => {
           <a href="tel:+94712299634" style={{ color: colors.textSecondary }}>
             071 229 9634
           </a>
-          <span style={{ color: colors.textSecondary }}>Athurugiriya , Colombo, Sri Lanka, 10150</span>
+          <span style={{ color: colors.textSecondary }}>169/C, Oruwalpitiya Road, Athurugiriya, Colombo, Sri Lanka, 10150</span>
         </div>
 
         <div className="site-footer__column">

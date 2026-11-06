@@ -8,7 +8,7 @@ const services = [
   { title: 'Wedding Photography', description: 'Comprehensive wedding coverage from preparation to reception, documenting every special moment of your big day.', icon: 'wedding' },
   { title: 'Event Photography', description: 'Corporate events, parties, and celebrations captured with a professional touch and attention to detail.', icon: 'event' },
   { title: 'Fashion Photography', description: 'Creative fashion shoots for portfolios, lookbooks, and brand campaigns with artistic vision.', icon: 'fashion' },
-  { title: 'Nature & Landscape', description: 'Stunning nature and landscape photography that captures the beauty of the world around us.', icon: 'landscape' },
+  { title: 'Birthday Photography', description: 'Joyful birthday celebrations captured through candid moments, colourful details, and memories to cherish.', icon: 'birthday' },
   { title: 'Commercial Photography', description: 'Product and commercial photography for businesses, brands, and marketing materials.', icon: 'commercial' }
 ]
 
@@ -28,7 +28,7 @@ const Services = () => {
           {services.map((service, index) => (
             <motion.article
               className="services-page__card"
-              key={service.icon}
+              key={service.title}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.08 * index }}

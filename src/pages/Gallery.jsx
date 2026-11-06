@@ -8,30 +8,27 @@ const Gallery = () => {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [selectedPhoto, setSelectedPhoto] = useState(null)
 
-  const categories = ['All', 'Portrait', 'Wedding', 'Nature', 'Event', 'Fashion', 'Landscape']
+  const categories = ['All', 'Portrait', 'Wedding', 'Event']
 
   // Sample gallery photos
   const samplePhotos = [
     { id: 1, url: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=800', title: 'Portrait Excellence', category: 'Portrait', isFavorite: true },
     { id: 2, url: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800', title: 'Wedding Moments', category: 'Wedding', isFavorite: true },
-    { id: 3, url: 'https://images.unsplash.com/photo-1471341971476-ae15ff5dd4ea?w=800', title: 'Natural Beauty', category: 'Nature', isFavorite: false },
     { id: 4, url: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800', title: 'Celebration', category: 'Event', isFavorite: true },
-    { id: 5, url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800', title: 'Fashion Art', category: 'Fashion', isFavorite: false },
-    { id: 6, url: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800', title: 'Landscape Stories', category: 'Landscape', isFavorite: true },
     { id: 7, url: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800', title: 'Elegant Pose', category: 'Portrait', isFavorite: false },
     { id: 8, url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800', title: 'Bride & Groom', category: 'Wedding', isFavorite: true },
-    { id: 9, url: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=800', title: 'Waterfall', category: 'Nature', isFavorite: false },
-    { id: 10, url: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800', title: 'Party Time', category: 'Event', isFavorite: false },
-    { id: 11, url: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=800', title: 'Runway', category: 'Fashion', isFavorite: true },
-    { id: 12, url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800', title: 'Mountain View', category: 'Landscape', isFavorite: false }
+    { id: 10, url: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800', title: 'Party Time', category: 'Event', isFavorite: false }
   ]
 
-  const allPhotos = [...getUploadedPhotos(), ...samplePhotos]
+  const uploadedPhotos = getUploadedPhotos().filter(photo => {
+    const category = photo.category?.toLowerCase() || ''
+    return photo.collection === 'SandaruSeya' || (!photo.collection && category !== 'birthday' && !category.startsWith('arts & you') && !category.startsWith('arts & you'))
+  })
+  const allPhotos = [...uploadedPhotos, ...samplePhotos]
 
   const stories = [
     { id: 1, url: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400', title: 'Wedding Story', date: '2024' },
     { id: 2, url: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=400', title: 'Portrait Session', date: '2024' },
-    { id: 3, url: 'https://images.unsplash.com/photo-1471341971476-ae15ff5dd4ea?w=400', title: 'Nature Journey', date: '2023' },
     { id: 4, url: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=400', title: 'Event Highlights', date: '2024' }
   ]
 

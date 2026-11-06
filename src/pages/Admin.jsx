@@ -7,13 +7,18 @@ const Admin = () => {
   const theme = useTheme()
   const [uploadData, setUploadData] = useState({
     title: '',
+    collection: '',
     category: '',
     isFavorite: false
   })
   const [uploadedPhotos, setUploadedPhotos] = useState(getUploadedPhotos)
   const [previewUrl, setPreviewUrl] = useState(null)
 
-  const categories = ['Portrait', 'Wedding', 'Nature', 'Event', 'Fashion', 'Landscape']
+  const collectionCategories = {
+    SandaruSeya: ['Portrait', 'Wedding', 'Event', 'Nature', 'Fashion', 'Landscape'],
+    'Arts & You': ['Birthday', 'Event']
+  }
+  const categories = collectionCategories[uploadData.collection] || []
 
   const handleFileChange = (e) => {
     const file = e.target.files[0]
@@ -29,7 +34,7 @@ const Admin = () => {
   const handleUpload = (e) => {
     e.preventDefault()
     
-    if (!previewUrl || !uploadData.title || !uploadData.category) {
+    if (!previewUrl || !uploadData.title || !uploadData.collection || !uploadData.category) {
       alert('Please fill in all required fields and select an image')
       return
     }
@@ -38,6 +43,7 @@ const Admin = () => {
       id: Date.now(),
       url: previewUrl,
       title: uploadData.title,
+      collection: uploadData.collection,
       category: uploadData.category,
       isFavorite: uploadData.isFavorite,
       date: new Date().toLocaleDateString()
@@ -51,7 +57,7 @@ const Admin = () => {
       alert('This photo is too large to save in this browser. Try a smaller image.')
       return
     }
-    setUploadData({ title: '', category: '', isFavorite: false })
+    setUploadData({ title: '', collection: '', category: '', isFavorite: false })
     setPreviewUrl(null)
     
     // Reset file input
@@ -220,7 +226,7 @@ const Admin = () => {
                   />
                 </div>
 
-                {/* Category */}
+                {/* Collection */}
                 <div style={{ marginBottom: '1.5rem' }}>
                   <label style={{
                     display: 'block',
@@ -231,11 +237,11 @@ const Admin = () => {
                     textTransform: 'uppercase',
                     letterSpacing: '1px'
                   }}>
-                    Category *
+                    Collection *
                   </label>
                   <select
-                    value={uploadData.category}
-                    onChange={(e) => setUploadData({ ...uploadData, category: e.target.value })}
+                    value={uploadData.collection}
+                    onChange={(e) => setUploadData({ ...uploadData, collection: e.target.value, category: '' })}
                     required
                     style={{
                       width: '100%',
@@ -250,7 +256,28 @@ const Admin = () => {
                     onFocus={(e) => e.target.style.borderColor = theme.colors.accent}
                     onBlur={(e) => e.target.style.borderColor = theme.colors.border}
                   >
-                    <option value="">Select category</option>
+                    <option value="">Select collection</option>
+                    {Object.keys(collectionCategories).map((collection) => (
+                      <option key={collection} value={collection}>{collection}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Category */}
+                <div style={{ marginBottom: '1.5rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', color: theme.colors.text, marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                    Category *
+                  </label>
+                  <select
+                    value={uploadData.category}
+                    onChange={(e) => setUploadData({ ...uploadData, category: e.target.value })}
+                    required
+                    disabled={!uploadData.collection}
+                    style={{ width: '100%', padding: '0.875rem', backgroundColor: theme.colors.background, border: `1px solid ${theme.colors.border}`, borderRadius: '4px', color: theme.colors.text, fontSize: '1rem', transition: 'border-color 0.3s ease', opacity: uploadData.collection ? 1 : 0.6 }}
+                    onFocus={(e) => e.target.style.borderColor = theme.colors.accent}
+                    onBlur={(e) => e.target.style.borderColor = theme.colors.border}
+                  >
+                    <option value="">{uploadData.collection ? 'Select category' : 'Select a collection first'}</option>
                     {categories.map((cat) => (
                       <option key={cat} value={cat}>{cat}</option>
                     ))}
@@ -383,7 +410,7 @@ const Admin = () => {
                         color: theme.colors.textSecondary,
                         marginBottom: '0.5rem'
                       }}>
-                        {photo.category}
+                        {photo.collection ? `${photo.collection} · ` : ''}{photo.category}
                       </div>
                       <div style={{
                         fontSize: '0.8rem',

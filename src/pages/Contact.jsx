@@ -61,7 +61,7 @@ const Contact = () => {
     }
   }
 
-  const whatsappNumber = '0712299634' // Replace with actual WhatsApp number
+  const whatsappNumber = '94712299634'
   const whatsappMessage = encodeURIComponent('Hi! I would like to inquire about photography services.')
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`
 
@@ -72,7 +72,7 @@ const Contact = () => {
       paddingTop: '100px',
       paddingBottom: '2rem'
     }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: isMobile ? '0 1rem' : '0 2rem' }}>
         {/* Page Title */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -97,8 +97,9 @@ const Contact = () => {
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
-          gap: isMobile ? '2rem' : '3rem'
+          gridTemplateColumns: window.innerWidth < 1000 ? '1fr' : 'minmax(0, 1fr) minmax(0, 1fr)',
+          gap: isMobile ? '2rem' : '3rem',
+          alignItems: 'start'
         }}>
           {/* Contact Info */}
           <motion.div
@@ -150,7 +151,7 @@ const Contact = () => {
                     color: theme.colors.text,
                     fontWeight: '500'
                   }}>
-                    Athurugiriya , Colombo, Sri Lanka, 10150
+                    169/C, Oruwalpitiya Road, Athurugiriya, Colombo, Sri Lanka, 10150
                   </div>
                 </div>
               </div>
@@ -234,126 +235,27 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* WhatsApp Button */}
-            <motion.a
-              href={whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.05, backgroundColor: '#25D366', color: '#FFFFFF', borderColor: '#25D366' }}
-              whileTap={{ scale: 0.95 }}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.75rem',
-                padding: '1rem 2rem',
-                backgroundColor: theme.colors.surface,
-                color: theme.colors.text,
-                textDecoration: 'none',
-                fontSize: '1.1rem',
-                fontWeight: '600',
-                borderRadius: '8px',
-                transition: 'all 0.3s ease',
-                border: '1px solid rgba(37, 211, 102, 0.55)',
-                cursor: 'pointer',
-                boxShadow: '0 4px 16px rgba(37, 211, 102, 0.12)'
-              }}
-            >
-              <img src="/contact icon/whatsapp.png" alt="" width="24" height="24" aria-hidden="true" />
-              Chat on WhatsApp
-            </motion.a>
-
-            {/* Social Links */}
-            <div style={{ marginTop: '1.5rem' }}>
-              <h3 style={{
-                fontSize: '1.2rem',
-                fontWeight: '500',
-                color: theme.colors.text,
-                marginBottom: '1rem'
-              }}>
-                Follow Me
-              </h3>
-              <div style={{
-                display: 'flex',
-                gap: '1rem'
-              }}>
-                {/* Instagram */}
-                <motion.a
-                  href="https://www.instagram.com/sandaru_seya?xtok=a2FveDk1NmhncnRm"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1 }}
-                  style={{
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: theme.colors.text,
-                    backgroundColor: theme.isDark ? '#1A1A1A' : '#FFFFFF',
-                    border: `1px solid ${theme.colors.border}`,
-                    textDecoration: 'none',
-                    transition: 'all 0.3s ease'
-                  }}
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <rect x="3" y="3" width="18" height="18" rx="5" />
-                    <circle cx="12" cy="12" r="4" />
-                    <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-                  </svg>
-                </motion.a>
-
-                {/* Facebook */}
-                <motion.a
-                  href="https://web.facebook.com/pasindu.sandaruwan.39?__tn__=-UC*F"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1 }}
-                  style={{
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: theme.colors.text,
-                    backgroundColor: theme.isDark ? '#1A1A1A' : '#FFFFFF',
-                    border: `1px solid ${theme.colors.border}`,
-                    textDecoration: 'none',
-                    transition: 'all 0.3s ease'
-                  }}
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M13.5 21v-8.2h2.8l.4-3.2h-3.2V7.5c0-.9.3-1.6 1.6-1.6h1.7V3.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.3H7.3v3.2h2.8V21h3.4Z" />
-                  </svg>
-                </motion.a>
-
-                {/* TikTok */}
-                <motion.a
-                  href="https://www.tiktok.com/@sandaru_seya?_r=1&_t=ZS-9AWevw1NJkv"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1 }}
-                  style={{
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: theme.colors.text,
-                    backgroundColor: theme.isDark ? '#1A1A1A' : '#FFFFFF',
-                    border: `1px solid ${theme.colors.border}`,
-                    textDecoration: 'none',
-                    transition: 'all 0.3s ease'
-                  }}
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M19.6 7.1a6 6 0 0 1-3.7-1.3v8.1a5.8 5.8 0 1 1-5-5.7v3.2a2.7 2.7 0 1 0 1.9 2.5V2.5h3.1c.2 2 1.6 3.6 3.7 3.9v.7Z" />
-                  </svg>
-                </motion.a>
-              </div>
+            <div style={{ width: '100%', margin: '0 0 2rem', overflow: 'hidden', borderRadius: '8px', border: `1px solid ${theme.colors.border}` }}>
+              <iframe
+                title="Map showing 169/C, Oruwalpitiya Road, Athurugiriya"
+                src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3961.108604744014!2d79.99794399999999!3d6.8775900000000005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNsKwNTInMzkuMyJOIDc5wrA1OSc1Mi42IkU!5e0!3m2!1sen!2slk!4v1793976811928!5m2!1sen!2slk"
+                width="100%"
+                height="450"
+                style={{ display: 'block', width: '100%', height: 'clamp(320px, 55vw, 450px)', border: 0 }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+              <a
+                href="https://maps.app.goo.gl/XBjeuT8KCqRQgWFu9"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: 'block', padding: '0.85rem 1rem', backgroundColor: theme.colors.surface, color: theme.colors.text, textDecoration: 'none', fontWeight: '500' }}
+              >
+                Open in Google Maps →
+              </a>
             </div>
+
           </motion.div>
 
           {/* Booking Form */}
@@ -657,6 +559,35 @@ const Contact = () => {
                 </motion.button>
               </form>
             )}
+
+            <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '1.25rem' }}>
+              <motion.a
+                href={whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.03, backgroundColor: '#25D366', color: '#FFFFFF', borderColor: '#25D366' }}
+                whileTap={{ scale: 0.97 }}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem', padding: '1rem 1.5rem', backgroundColor: theme.colors.surface, color: theme.colors.text, textDecoration: 'none', fontSize: '1rem', fontWeight: '600', borderRadius: '8px', border: '1px solid rgba(37, 211, 102, 0.55)', cursor: 'pointer' }}
+              >
+                <img src="/contact icon/whatsapp.png" alt="" width="24" height="24" aria-hidden="true" />
+                Chat on WhatsApp
+              </motion.a>
+
+              <div>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: '500', color: theme.colors.text, margin: '0 0 0.75rem' }}>Follow Me</h3>
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                  <a href="https://www.instagram.com/sandaru_seya?xtok=a2FveDk1NmhncnRm" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style={{ width: '48px', height: '48px', borderRadius: '50%', display: 'grid', placeItems: 'center', color: theme.colors.text, backgroundColor: theme.colors.surface, border: `1px solid ${theme.colors.border}` }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg>
+                  </a>
+                  <a href="https://web.facebook.com/pasindu.sandaruwan.39?__tn__=-UC*F" target="_blank" rel="noopener noreferrer" aria-label="Facebook" style={{ width: '48px', height: '48px', borderRadius: '50%', display: 'grid', placeItems: 'center', color: theme.colors.text, backgroundColor: theme.colors.surface, border: `1px solid ${theme.colors.border}` }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-8.2h2.8l.4-3.2h-3.2V7.5c0-.9.3-1.6 1.6-1.6h1.7V3.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.3H7.3v3.2h2.8V21h3.4Z" /></svg>
+                  </a>
+                  <a href="https://www.tiktok.com/@sandaru_seya?_r=1&_t=ZS-9AWevw1NJkv" target="_blank" rel="noopener noreferrer" aria-label="TikTok" style={{ width: '48px', height: '48px', borderRadius: '50%', display: 'grid', placeItems: 'center', color: theme.colors.text, backgroundColor: theme.colors.surface, border: `1px solid ${theme.colors.border}` }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.6 7.1a6 6 0 0 1-3.7-1.3v8.1a5.8 5.8 0 1 1-5-5.7v3.2a2.7 2.7 0 1 0 1.9 2.5V2.5h3.1c.2 2 1.6 3.6 3.7 3.9v.7Z" /></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>
