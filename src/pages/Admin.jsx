@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../contexts/ThemeContext'
-import { getUploadedPhotos, saveUploadedPhotos } from '../utils/galleryStorage'
+import { compressPhoto, getUploadedPhotos, saveUploadedPhotos } from '../utils/galleryStorage'
 
 const Admin = () => {
   const theme = useTheme()
@@ -9,67 +9,95 @@ const Admin = () => {
     title: '',
     collection: '',
     category: '',
+    album: '',
     isFavorite: false
   })
-  const [uploadedPhotos, setUploadedPhotos] = useState(getUploadedPhotos)
-  const [previewUrl, setPreviewUrl] = useState(null)
+  const [uploadedPhotos, setUploadedPhotos] = useState([])
+  const [previewUrls, setPreviewUrls] = useState([])
+  const [selectedFiles, setSelectedFiles] = useState([])
+  const [selectedAdminAlbum, setSelectedAdminAlbum] = useState(null)
+
+  useEffect(() => {
+    getUploadedPhotos().then(setUploadedPhotos).catch(() => alert('Could not load saved gallery photos.'))
+  }, [])
 
   const collectionCategories = {
-    SandaruSeya: ['Portrait', 'Wedding', 'Event', 'Nature', 'Fashion', 'Landscape'],
-    'Arts & You': ['Birthday', 'Event']
+    SandaruSeya: ['Wedding', 'Preshoot', 'Commercial'],
+    'Arts & You': ['Birthday', 'Event','Graduation']
   }
   const categories = collectionCategories[uploadData.collection] || []
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0]
-    if (file) {
+    const files = Array.from(e.target.files || [])
+    setSelectedFiles(files)
+    if (files.length) {
+      Promise.all(files.map(file => new Promise(resolve => {
       const reader = new FileReader()
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result)
-      }
+        reader.onloadend = () => resolve(reader.result)
       reader.readAsDataURL(file)
+      }))).then(setPreviewUrls)
+    } else {
+      setPreviewUrls([])
     }
   }
 
-  const handleUpload = (e) => {
+  const handleUpload = async (e) => {
     e.preventDefault()
     
-    if (!previewUrl || !uploadData.title || !uploadData.collection || !uploadData.category) {
+    if (!selectedFiles.length || !uploadData.collection || !uploadData.category) {
       alert('Please fill in all required fields and select an image')
       return
     }
 
-    const newPhoto = {
-      id: Date.now(),
-      url: previewUrl,
-      title: uploadData.title,
-      collection: uploadData.collection,
-      category: uploadData.category,
-      isFavorite: uploadData.isFavorite,
-      date: new Date().toLocaleDateString()
-    }
-
-    const updatedPhotos = [newPhoto, ...uploadedPhotos]
     try {
-      saveUploadedPhotos(updatedPhotos)
+      const newPhotos = []
+      for (const [index, file] of selectedFiles.entries()) {
+        const fileTitle = file.name.replace(/\.[^.]+$/, '')
+        newPhotos.push({
+          id: Date.now() + index,
+          url: await compressPhoto(file),
+          title: selectedFiles.length === 1 && uploadData.title.trim() ? uploadData.title.trim() : fileTitle,
+          collection: uploadData.collection,
+          category: uploadData.category,
+          album: uploadData.album.trim(),
+          isFavorite: uploadData.isFavorite,
+          date: new Date().toLocaleDateString()
+        })
+      }
+      const updatedPhotos = [...newPhotos, ...uploadedPhotos]
+      await saveUploadedPhotos(updatedPhotos)
       setUploadedPhotos(updatedPhotos)
+      setSelectedAdminAlbum(uploadData.album.trim() || 'Unassigned photos')
     } catch {
-      alert('This photo is too large to save in this browser. Try a smaller image.')
+      alert('Could not save this photo. Check available browser storage and try again.')
       return
     }
-    setUploadData({ title: '', collection: '', category: '', isFavorite: false })
-    setPreviewUrl(null)
+    setUploadData({ title: '', collection: '', category: '', album: '', isFavorite: false })
+    setPreviewUrls([])
+    setSelectedFiles([])
     
     // Reset file input
     const fileInput = document.getElementById('photo-upload')
     if (fileInput) fileInput.value = ''
   }
 
-  const deletePhoto = (id) => {
+  const deletePhoto = async (id) => {
     const updatedPhotos = uploadedPhotos.filter(photo => photo.id !== id)
-    saveUploadedPhotos(updatedPhotos)
+    await saveUploadedPhotos(updatedPhotos)
+    setUploadedPhotos(updatedPhotos)
+    if (selectedAdminAlbum && !updatedPhotos.some(photo => (photo.album || 'Unassigned photos') === selectedAdminAlbum)) {
+      setSelectedAdminAlbum(null)
+    }
+  }
+
+  const toggleFavorite = async (id) => {
+    const updatedPhotos = uploadedPhotos.map(photo => photo.id === id ? { ...photo, isFavorite: !photo.isFavorite } : photo)
+    await saveUploadedPhotos(updatedPhotos)
     setUploadedPhotos(updatedPhotos)
   }
+
+  const adminAlbums = [...new Set(uploadedPhotos.map(photo => photo.album?.trim() || 'Unassigned photos'))]
+    .map(name => ({ name, photos: uploadedPhotos.filter(photo => (photo.album?.trim() || 'Unassigned photos') === name) }))
 
   return (
     <div style={{
@@ -141,7 +169,7 @@ const Admin = () => {
                     textTransform: 'uppercase',
                     letterSpacing: '1px'
                   }}>
-                    Photo *
+                    Photos *
                   </label>
                   <div
                     style={{
@@ -157,17 +185,15 @@ const Admin = () => {
                     onMouseEnter={(e) => e.currentTarget.style.borderColor = theme.colors.accent}
                     onMouseLeave={(e) => e.currentTarget.style.borderColor = theme.colors.border}
                   >
-                    {previewUrl ? (
-                      <img
-                        src={previewUrl}
-                        alt="Preview"
-                        style={{
-                          width: '100%',
-                          height: '200px',
-                          objectFit: 'cover',
-                          borderRadius: '4px'
-                        }}
-                      />
+                    {previewUrls.length ? (
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(90px, 1fr))', gap: '0.5rem', maxHeight: '220px', overflowY: 'auto' }}>
+                        {previewUrls.map((url, index) => (
+                          <div key={`${selectedFiles[index]?.name}-${index}`}>
+                            <img src={url} alt={selectedFiles[index]?.name || 'Photo preview'} style={{ width: '100%', height: '90px', objectFit: 'cover', borderRadius: '4px' }} />
+                            <small style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: theme.colors.textSecondary }}>{selectedFiles[index]?.name}</small>
+                          </div>
+                        ))}
+                      </div>
                     ) : (
                       <div>
                         <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>📷</div>
@@ -180,6 +206,7 @@ const Admin = () => {
                       id="photo-upload"
                       type="file"
                       accept="image/*"
+                      multiple
                       onChange={handleFileChange}
                       required
                       style={{
@@ -203,14 +230,13 @@ const Admin = () => {
                     textTransform: 'uppercase',
                     letterSpacing: '1px'
                   }}>
-                    Title *
+                    Title (single photo only)
                   </label>
                   <input
                     type="text"
                     value={uploadData.title}
                     onChange={(e) => setUploadData({ ...uploadData, title: e.target.value })}
-                    required
-                    placeholder="Enter photo title"
+                    placeholder="Leave blank to use the file name"
                     style={{
                       width: '100%',
                       padding: '0.875rem',
@@ -284,6 +310,26 @@ const Admin = () => {
                   </select>
                 </div>
 
+                <div style={{ marginBottom: '1.5rem' }}>
+                  <label htmlFor="photo-album" style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', color: theme.colors.text, marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                    Album
+                  </label>
+                  <input
+                    id="photo-album"
+                    list="existing-albums"
+                    value={uploadData.album}
+                    onChange={(e) => setUploadData({ ...uploadData, album: e.target.value })}
+                    placeholder="Create or choose an album"
+                    style={{ width: '100%', padding: '0.875rem', backgroundColor: theme.colors.background, border: `1px solid ${theme.colors.border}`, borderRadius: '4px', color: theme.colors.text, fontSize: '1rem' }}
+                  />
+                  <small style={{ display: 'block', marginTop: '0.5rem', color: theme.colors.textSecondary }}>
+                    Enter a new album name or choose an existing one. Upload each photo into the same album.
+                  </small>
+                  <datalist id="existing-albums">
+                    {[...new Set(uploadedPhotos.map(photo => photo.album).filter(Boolean))].map(album => <option key={album} value={album} />)}
+                  </datalist>
+                </div>
+
                 {/* Favorite Toggle */}
                 <div style={{ marginBottom: '2rem' }}>
                   <label style={{
@@ -331,7 +377,7 @@ const Admin = () => {
                     letterSpacing: '1px'
                   }}
                 >
-                  Upload Photo
+                  Upload {selectedFiles.length > 1 ? `${selectedFiles.length} Photos` : 'Photo'}
                 </motion.button>
               </form>
             </div>
@@ -349,7 +395,7 @@ const Admin = () => {
               color: theme.colors.text,
               marginBottom: '1.5rem'
             }}>
-              Uploaded Photos ({uploadedPhotos.length})
+              {selectedAdminAlbum ? `${selectedAdminAlbum} (${uploadedPhotos.filter(photo => (photo.album?.trim() || 'Unassigned photos') === selectedAdminAlbum).length})` : `Albums (${adminAlbums.length})`}
             </h2>
 
             {uploadedPhotos.length === 0 ? (
@@ -366,13 +412,35 @@ const Admin = () => {
                   No photos uploaded yet. Start by uploading your first photo!
                 </div>
               </div>
+            ) : selectedAdminAlbum === null ? (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1.5rem' }}>
+                {adminAlbums.map(album => (
+                  <motion.button
+                    key={album.name}
+                    type="button"
+                    whileHover={{ y: -4 }}
+                    onClick={() => setSelectedAdminAlbum(album.name)}
+                    style={{ padding: 0, border: `1px solid ${theme.colors.border}`, borderRadius: '8px', overflow: 'hidden', cursor: 'pointer', backgroundColor: theme.colors.surface, textAlign: 'left', color: theme.colors.text }}
+                  >
+                    <img src={album.photos[0].url} alt={album.name} style={{ display: 'block', width: '100%', height: '180px', objectFit: 'cover' }} />
+                    <div style={{ padding: '1rem' }}>
+                      <div style={{ fontWeight: '600', marginBottom: '0.35rem' }}>{album.name}</div>
+                      <div style={{ color: theme.colors.textSecondary, fontSize: '0.9rem' }}>{album.photos.length} {album.photos.length === 1 ? 'photo' : 'photos'}</div>
+                    </div>
+                  </motion.button>
+                ))}
+              </div>
             ) : (
+              <>
+                <button type="button" onClick={() => setSelectedAdminAlbum(null)} style={{ marginBottom: '1rem', padding: '0.65rem 1rem', backgroundColor: theme.colors.surface, color: theme.colors.text, border: `1px solid ${theme.colors.border}`, borderRadius: '4px', cursor: 'pointer' }}>
+                  ← Back to albums
+                </button>
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
                 gap: '1.5rem'
               }}>
-                {uploadedPhotos.map((photo) => (
+                {uploadedPhotos.filter(photo => (photo.album?.trim() || 'Unassigned photos') === selectedAdminAlbum).map((photo) => (
                   <motion.div
                     key={photo.id}
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -438,6 +506,15 @@ const Admin = () => {
                       )}
                     </div>
                     <button
+                      type="button"
+                      aria-label={photo.isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+                      title={photo.isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+                      onClick={() => toggleFavorite(photo.id)}
+                      style={{ position: 'absolute', top: '10px', right: '10px', width: '34px', height: '34px', border: 'none', borderRadius: '50%', cursor: 'pointer', backgroundColor: photo.isFavorite ? theme.colors.accent : 'rgba(0, 0, 0, 0.55)', color: '#FFFFFF', fontSize: '1.2rem' }}
+                    >
+                      {photo.isFavorite ? '♥' : '♡'}
+                    </button>
+                    <button
                       onClick={() => deletePhoto(photo.id)}
                       style={{
                         width: '100%',
@@ -458,6 +535,7 @@ const Admin = () => {
                   </motion.div>
                 ))}
               </div>
+              </>
             )}
           </motion.div>
         </div>

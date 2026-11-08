@@ -12,8 +12,9 @@ import Contact from './pages/Contact'
 import Admin from './pages/Admin'
 
 const PageWatermark = () => {
-  const { pathname } = useLocation()
+  const { pathname, search } = useLocation()
   const theme = useTheme()
+  const isArtsYouGallery = pathname === '/gallery' && new URLSearchParams(search).get('collection') === 'arts-you'
 
   if (pathname === '/' || pathname === '/art-and-you') return null
 
@@ -32,13 +33,13 @@ const PageWatermark = () => {
       }}
     >
       <img
-        src="/logo.jpg"
+        src={isArtsYouGallery ? '/A&Ulogo.png' : '/logo.jpg'}
         alt=""
         style={{
           width: 'min(58vw, 620px)',
           maxWidth: '80vw',
           height: 'auto',
-          filter: theme.isDark ? 'invert(1)' : 'none'
+          filter: theme.isDark ? (isArtsYouGallery ? 'brightness(0) invert(1)' : 'invert(1)') : 'none'
         }}
       />
     </div>

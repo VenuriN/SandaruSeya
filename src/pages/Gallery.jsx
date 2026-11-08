@@ -1,40 +1,61 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { useSearchParams } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
 import { getUploadedPhotos } from '../utils/galleryStorage'
 
 const Gallery = () => {
   const theme = useTheme()
-  const [selectedCategory, setSelectedCategory] = useState('all')
+  const [searchParams] = useSearchParams()
+  const isArtsYou = searchParams.get('collection') === 'arts-you'
+  const [selectedCategory, setSelectedCategory] = useState(() => searchParams.get('category') || 'all')
+  const [selectedAlbum, setSelectedAlbum] = useState(() => searchParams.get('album') || 'all')
   const [selectedPhoto, setSelectedPhoto] = useState(null)
+  const [uploadedPhotos, setUploadedPhotos] = useState([])
 
-  const categories = ['All', 'Portrait', 'Wedding', 'Event']
+  const categories = isArtsYou ? ['All', 'Birthday', 'Graduation', 'Event'] : ['All', 'Wedding', 'Preshoot', 'Commercial']
 
-  // Sample gallery photos
-  const samplePhotos = [
-    { id: 1, url: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=800', title: 'Portrait Excellence', category: 'Portrait', isFavorite: true },
-    { id: 2, url: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800', title: 'Wedding Moments', category: 'Wedding', isFavorite: true },
-    { id: 4, url: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800', title: 'Celebration', category: 'Event', isFavorite: true },
-    { id: 7, url: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800', title: 'Elegant Pose', category: 'Portrait', isFavorite: false },
-    { id: 8, url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800', title: 'Bride & Groom', category: 'Wedding', isFavorite: true },
-    { id: 10, url: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800', title: 'Party Time', category: 'Event', isFavorite: false }
-  ]
+  useEffect(() => {
+    getUploadedPhotos().then(setUploadedPhotos).catch(() => alert('Could not load gallery photos.'))
+  }, [])
 
-  const uploadedPhotos = getUploadedPhotos().filter(photo => {
+  const galleryPhotos = uploadedPhotos.filter(photo => {
     const category = photo.category?.toLowerCase() || ''
+    const collection = photo.collection?.trim().toLowerCase() || ''
+    if (isArtsYou) {
+      return ['art & you', 'arts & you'].includes(collection) || (!collection && ['birthday', 'graduation', 'event'].includes(category))
+    }
     return photo.collection === 'SandaruSeya' || (!photo.collection && category !== 'birthday' && !category.startsWith('arts & you') && !category.startsWith('arts & you'))
   })
-  const allPhotos = [...uploadedPhotos, ...samplePhotos]
+  const allPhotos = galleryPhotos
+  const getAlbumName = photo => photo.album?.trim() || (isArtsYou ? `${photo.category || 'Other'} Photos` : '')
+  const categoryGalleryPhotos = selectedCategory === 'all'
+    ? galleryPhotos
+    : galleryPhotos.filter(photo => photo.category?.toLowerCase() === selectedCategory)
+  const albums = [...new Set(categoryGalleryPhotos.map(getAlbumName).filter(Boolean))]
+    .map(name => ({
+      name,
+      photos: categoryGalleryPhotos.filter(photo => getAlbumName(photo) === name)
+    }))
 
-  const stories = [
-    { id: 1, url: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400', title: 'Wedding Story', date: '2024' },
-    { id: 2, url: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=400', title: 'Portrait Session', date: '2024' },
-    { id: 4, url: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=400', title: 'Event Highlights', date: '2024' }
-  ]
+  const stories = [...new Set(galleryPhotos.map(getAlbumName).filter(Boolean))].map(album => {
+    const photos = galleryPhotos.filter(photo => getAlbumName(photo) === album)
+    return {
+      id: album,
+      album,
+      url: photos[0].url,
+      title: album,
+      date: photos[0].date || '',
+      category: photos[0].category
+    }
+  })
 
-  const filteredPhotos = selectedCategory === 'all' 
+  const categoryPhotos = selectedCategory === 'all'
     ? allPhotos 
     : allPhotos.filter(photo => photo.category.toLowerCase() === selectedCategory.toLowerCase())
+  const filteredPhotos = selectedAlbum === 'all'
+    ? selectedCategory === 'all' ? categoryPhotos : categoryPhotos.filter(photo => !photo.album)
+    : categoryPhotos.filter(photo => getAlbumName(photo) === selectedAlbum)
 
   const favoritePhotos = allPhotos.filter(photo => photo.isFavorite)
 
@@ -58,13 +79,14 @@ const Gallery = () => {
             color: theme.colors.text,
             marginBottom: '0.5rem'
           }}>
-            Gallery
+            {isArtsYou ? 'Arts & You Gallery' : 'Gallery'}
           </h1>
           <p style={{
             fontSize: '1.1rem',
             color: theme.colors.textSecondary
           }}>
-            Explore my collection of captured moments
+            {/* Explore our collection of captured moments */}
+            Explore a collection of timeless moments, genuine emotions, and beautiful stories captured through our lens.
           </p>
         </motion.div>
 
@@ -73,7 +95,7 @@ const Gallery = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          style={{ marginBottom: '4rem' }}
+          style={{ marginBottom: '4rem', display: selectedAlbum === 'all' && stories.length ? undefined : 'none' }}
         >
           <h2 style={{
             fontSize: '1.8rem',
@@ -93,6 +115,10 @@ const Gallery = () => {
               <motion.div
                 key={story.id}
                 whileHover={{ scale: 1.05 }}
+                onClick={() => {
+                  setSelectedCategory(story.category.toLowerCase())
+                  setSelectedAlbum(story.album)
+                }}
                 style={{
                   flexShrink: 0,
                   width: '200px',
@@ -134,7 +160,7 @@ const Gallery = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          style={{ marginBottom: '4rem' }}
+          style={{ marginBottom: '4rem', display: selectedAlbum === 'all' ? undefined : 'none' }}
         >
           <h2 style={{
             fontSize: '1.8rem',
@@ -149,7 +175,7 @@ const Gallery = () => {
           </h2>
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 250px), 1fr))',
             gap: '1.5rem'
           }}>
             {favoritePhotos.map((photo) => (
@@ -210,7 +236,10 @@ const Gallery = () => {
             {categories.map((category) => (
               <button
                 key={category}
-                onClick={() => setSelectedCategory(category.toLowerCase())}
+                onClick={() => {
+                  setSelectedCategory(category.toLowerCase())
+                  setSelectedAlbum('all')
+                }}
                 style={{
                   padding: '0.75rem 1.5rem',
                   backgroundColor: selectedCategory === category.toLowerCase() 
@@ -233,9 +262,36 @@ const Gallery = () => {
               </button>
             ))}
           </div>
+          {selectedAlbum === 'all' && selectedCategory !== 'all' && albums.length > 0 && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1.25rem', marginTop: '2rem' }}>
+              {albums.map((album) => (
+                <motion.button
+                  key={album.name}
+                  type="button"
+                  whileHover={{ y: -4 }}
+                  onClick={() => setSelectedAlbum(album.name)}
+                  style={{ padding: 0, border: `1px solid ${theme.colors.border}`, borderRadius: '8px', overflow: 'hidden', cursor: 'pointer', backgroundColor: theme.colors.surface, color: theme.colors.text, textAlign: 'left' }}
+                >
+                  <img src={album.photos[0].url} alt={album.name} style={{ display: 'block', width: '100%', aspectRatio: '4 / 3', objectFit: 'cover' }} />
+                  <div style={{ padding: '1rem' }}>
+                    <div style={{ fontSize: '1.05rem', fontWeight: '600', marginBottom: '0.35rem' }}>{album.name}</div>
+                    <div style={{ color: theme.colors.textSecondary, fontSize: '0.9rem' }}>{album.photos.length} {album.photos.length === 1 ? 'photo' : 'photos'}</div>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+          )}
         </motion.div>
 
         {/* Full Gallery Grid */}
+        {selectedAlbum !== 'all' && (
+          <div style={{ marginBottom: '1.5rem' }}>
+            <button type="button" onClick={() => setSelectedAlbum('all')} style={{ padding: '0.65rem 1rem', border: `1px solid ${theme.colors.border}`, borderRadius: '4px', color: theme.colors.text, backgroundColor: theme.colors.surface, cursor: 'pointer', marginBottom: '1rem' }}>
+              ← Back to albums
+            </button>
+            <h2 style={{ margin: 0, color: theme.colors.text, fontSize: '1.8rem', fontWeight: '500' }}>{selectedAlbum}</h2>
+          </div>
+        )}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -271,23 +327,11 @@ const Gallery = () => {
                   objectFit: 'cover'
                 }}
               />
-              <div style={{
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                right: 0,
-                padding: '1.5rem',
-                background: 'linear-gradient(transparent, rgba(0,0,0,0.8))',
-                color: '#FFFFFF',
-                opacity: 0,
-                transition: 'opacity 0.3s ease'
-              }}
-                onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
-                onMouseLeave={(e) => e.currentTarget.style.opacity = 0}
-              >
-                <div style={{ fontSize: '1.1rem', fontWeight: '600' }}>{photo.title}</div>
-                <div style={{ fontSize: '0.9rem', opacity: 0.8 }}>{photo.category}</div>
-              </div>
+              {photo.isFavorite && (
+                <div aria-label="Favorite photo" style={{ position: 'absolute', top: '10px', right: '10px', width: '34px', height: '34px', borderRadius: '50%', backgroundColor: theme.colors.accent, color: theme.isDark ? '#000000' : '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>
+                  ♥
+                </div>
+              )}
             </motion.div>
           ))}
         </motion.div>

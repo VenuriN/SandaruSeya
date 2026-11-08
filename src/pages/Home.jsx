@@ -7,44 +7,67 @@ const Home = () => {
   const theme = useTheme()
   const [currentIndex, setCurrentIndex] = useState(0)
 
-  // Sample photos - replace with actual photos
+  // Sample photos 
   const photos = [
     {
       id: 1,
-      url: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=1920',
-      title: 'Portrait Excellence',
-      category: 'Portrait'
-    },
-    {
-      id: 2,
-      url: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=1920',
-      title: 'Wedding Moments',
+      // url: 'https://drive.google.com/file/d/1WcPlb4CeqEe1ApDbsYQ6SoDOfErpAUXJ/view',
+      // url: 'https://drive.google.com/thumbnail?id=1WcPlb4CeqEe1ApDbsYQ6SoDOfErpAUXJ&sz=w1920',
+      url: '/Hero/IMG_4979.JPG',
+      title: 'A Promise in Bloom',
       category: 'Wedding'
     },
     {
+      id: 2,
+      // url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1920',
+      url: '/Hero/aaaa.jpg',
+      title: 'Elegance in Motion',
+      category: 'Preshoot'
+    },
+    {
       id: 3,
-      url: 'https://images.unsplash.com/photo-1471341971476-ae15ff5dd4ea?w=1920',
-      title: 'Natural Beauty',
-      category: 'Nature'
+      // url: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=1920',
+      url: '/Hero/q.jpeg',
+      title: 'Before the Forever',
+      category: 'Preshoot'
     },
     {
       id: 4,
-      url: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1920',
-      title: 'Celebration',
-      category: 'Event'
+      // url: 'https://images.unsplash.com/photo-1471341971476-ae15ff5dd4ea?w=1920',
+      url: '/Hero/e.jpg',
+      title: 'A Day to Remember',
+      category: 'Preshoot'
     },
     {
       id: 5,
-      url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1920',
-      title: 'Fashion Art',
-      category: 'Fashion'
+      // url: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920',
+      url: '/Hero/eeeeee.jpg',
+      title: 'Together by the Shore',
+      category: 'Preshoot'
     },
+
     {
       id: 6,
-      url: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920',
-      title: 'Landscape Stories',
-      category: 'Landscape'
+      // url: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920',
+      url: '/Hero/p.jpg',
+      title: 'The Art of You',
+      category: 'Wedding'
+    },
+    {
+      id: 7,
+      // url: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1920',
+      url: '/Hero/x.jpg',
+      title: 'The Joy We Gather',
+      category: 'Preshoot'
+    },
+    {
+      id: 8,
+      // url: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920',
+      url: '/Hero/collage-maker.png',
+      title: 'A Forever in Three Frames',
+      category: 'Wedding'
     }
+
   ]
 
   useEffect(() => {
@@ -79,7 +102,10 @@ const Home = () => {
           <motion.div
             key={currentIndex}
             initial={{ opacity: 0, scale: 1 }}
-            animate={{ opacity: 1, scale: [1, 1.1, 1] }}
+            animate={{
+              opacity: 1,
+              scale: photos[currentIndex].url === '/Hero/x.jpg' ? [1.2, 1.1, 1] : [1, 1.1, 1]
+            }}
             exit={{ opacity: 0 }}
             transition={{
               opacity: { duration: 1 },
@@ -93,8 +119,9 @@ const Home = () => {
               position: 'absolute',
               inset: 0,
               backgroundImage: `url(${photos[currentIndex].url})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
+              backgroundSize: photos[currentIndex].url === '/Hero/p.jpg' || photos[currentIndex].url === '/Hero/q.jpeg' ? 'contain' : 'cover',
+              backgroundPosition: 'center',
+              // backgroundRepeat: 'no-repeat'
             }}
           />
         </AnimatePresence>

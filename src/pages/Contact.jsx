@@ -117,7 +117,7 @@ const Contact = () => {
             </h2>
 
             <div style={{ marginBottom: '1.5rem' }}>
-              <div style={{
+               <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '1rem',
@@ -134,7 +134,7 @@ const Contact = () => {
                   justifyContent: 'center',
                   overflow: 'hidden'
                 }}>
-                  <img src="/contact icon/gps.png" alt="Location" width="42" height="42" style={{ filter: theme.isDark ? 'brightness(0) invert(1)' : 'brightness(0)' }} />
+                  <img src="/contact icon/call.png" alt="Phone" width="42" height="42" style={{ filter: theme.isDark ? 'brightness(0) invert(1)' : 'brightness(0)' }} />
                 </div>
                 <div>
                   <div style={{
@@ -144,17 +144,18 @@ const Contact = () => {
                     letterSpacing: '1px',
                     marginBottom: '0.25rem'
                   }}>
-                    Location
+                    Phone
                   </div>
                   <div style={{
                     fontSize: '1.1rem',
                     color: theme.colors.text,
                     fontWeight: '500'
                   }}>
-                    169/C, Oruwalpitiya Road, Athurugiriya, Colombo, Sri Lanka, 10150
+                    <a href="tel:+94712299634" style={{ color: 'inherit', textDecoration: 'none' }}>071 229 9634</a>
                   </div>
                 </div>
               </div>
+              
 
               <div style={{
                 display: 'flex',
@@ -190,12 +191,12 @@ const Contact = () => {
                     color: theme.colors.text,
                     fontWeight: '500'
                   }}>
-                    pasindusandaruwan29@gmail.com
+                    <a href="mailto:pasindusandaruwan29@gmail.com" style={{ color: 'inherit', textDecoration: 'none' }}>pasindusandaruwan29@gmail.com</a>
                   </div>
                 </div>
               </div>
 
-              <div style={{
+             <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '1rem',
@@ -212,7 +213,7 @@ const Contact = () => {
                   justifyContent: 'center',
                   overflow: 'hidden'
                 }}>
-                  <img src="/contact icon/call.png" alt="Phone" width="42" height="42" style={{ filter: theme.isDark ? 'brightness(0) invert(1)' : 'brightness(0)' }} />
+                  <img src="/contact icon/gps.png" alt="Location" width="42" height="42" style={{ filter: theme.isDark ? 'brightness(0) invert(1)' : 'brightness(0)' }} />
                 </div>
                 <div>
                   <div style={{
@@ -222,14 +223,14 @@ const Contact = () => {
                     letterSpacing: '1px',
                     marginBottom: '0.25rem'
                   }}>
-                    Phone
+                    Location
                   </div>
                   <div style={{
                     fontSize: '1.1rem',
                     color: theme.colors.text,
                     fontWeight: '500'
                   }}>
-                    071 229 9634
+                    169/C, Oruwalpitiya Road, Athurugiriya, Colombo, Sri Lanka, 10150
                   </div>
                 </div>
               </div>
@@ -475,6 +476,7 @@ const Contact = () => {
                       boxSizing: 'border-box',
                       padding: '0.75rem',
                       backgroundColor: theme.colors.background,
+                      colorScheme: theme.isDark ? 'dark' : 'light',
                       border: `1px solid ${theme.colors.border}`,
                       borderRadius: '4px',
                       color: theme.colors.text,
@@ -574,16 +576,19 @@ const Contact = () => {
               </motion.a>
 
               <div>
-                <h3 style={{ fontSize: '1.2rem', fontWeight: '500', color: theme.colors.text, margin: '0 0 0.75rem' }}>Follow Me</h3>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: '500', color: theme.colors.text, margin: '0 0 0.75rem' }}>Follow Us</h3>
                 <div style={{ display: 'flex', gap: '1rem' }}>
-                  <a href="https://www.instagram.com/sandaru_seya?xtok=a2FveDk1NmhncnRm" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style={{ width: '48px', height: '48px', borderRadius: '50%', display: 'grid', placeItems: 'center', color: theme.colors.text, backgroundColor: theme.colors.surface, border: `1px solid ${theme.colors.border}` }}>
+                  <a href="https://www.instagram.com/sandaru_seya?xtok=a2FveDk1NmhncnRm" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Sandaru Seya Instagram" style={{ width: '48px', height: '48px', borderRadius: '50%', display: 'grid', placeItems: 'center', color: theme.colors.text, backgroundColor: theme.colors.surface, border: `1px solid ${theme.colors.border}` }}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg>
                   </a>
-                  <a href="https://web.facebook.com/pasindu.sandaruwan.39?__tn__=-UC*F" target="_blank" rel="noopener noreferrer" aria-label="Facebook" style={{ width: '48px', height: '48px', borderRadius: '50%', display: 'grid', placeItems: 'center', color: theme.colors.text, backgroundColor: theme.colors.surface, border: `1px solid ${theme.colors.border}` }}>
+                  <a href="https://web.facebook.com/pasindu.sandaruwan.39?__tn__=-UC*F" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Sandaru Seya Facebook" style={{ width: '48px', height: '48px', borderRadius: '50%', display: 'grid', placeItems: 'center', color: theme.colors.text, backgroundColor: theme.colors.surface, border: `1px solid ${theme.colors.border}` }}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-8.2h2.8l.4-3.2h-3.2V7.5c0-.9.3-1.6 1.6-1.6h1.7V3.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.3H7.3v3.2h2.8V21h3.4Z" /></svg>
                   </a>
-                  <a href="https://www.tiktok.com/@sandaru_seya?_r=1&_t=ZS-9AWevw1NJkv" target="_blank" rel="noopener noreferrer" aria-label="TikTok" style={{ width: '48px', height: '48px', borderRadius: '50%', display: 'grid', placeItems: 'center', color: theme.colors.text, backgroundColor: theme.colors.surface, border: `1px solid ${theme.colors.border}` }}>
+                  <a href="https://www.tiktok.com/@sandaru_seya?_r=1&_t=ZS-9AWevw1NJkv" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="Sandaru Seya TikTok" style={{ width: '48px', height: '48px', borderRadius: '50%', display: 'grid', placeItems: 'center', color: theme.colors.text, backgroundColor: theme.colors.surface, border: `1px solid ${theme.colors.border}` }}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.6 7.1a6 6 0 0 1-3.7-1.3v8.1a5.8 5.8 0 1 1-5-5.7v3.2a2.7 2.7 0 1 0 1.9 2.5V2.5h3.1c.2 2 1.6 3.6 3.7 3.9v.7Z" /></svg>
+                  </a>
+                   <a href="https://web.facebook.com/pasindu.sandaruwan.39?__tn__=-UC*F" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Arts & You Facebook" style={{ width: '48px', height: '48px', borderRadius: '50%', display: 'grid', placeItems: 'center', color: theme.colors.text, backgroundColor: theme.colors.surface, border: `1px solid ${theme.colors.border}` }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-8.2h2.8l.4-3.2h-3.2V7.5c0-.9.3-1.6 1.6-1.6h1.7V3.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.3H7.3v3.2h2.8V21h3.4Z" /></svg>
                   </a>
                 </div>
               </div>
