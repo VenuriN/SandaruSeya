@@ -11,9 +11,10 @@ const About = () => {
       paddingTop: '120px',
       paddingBottom: 0
     }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+      <div className="about-page__inner" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
         {/* Hero Section */}
         <motion.div
+          className="about-page__hero"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           style={{

@@ -100,6 +100,7 @@ const Home = () => {
       }}>
         <AnimatePresence mode='wait'>
           <motion.div
+            className={`home-hero__slide home-hero__slide--${photos[currentIndex].id}`}
             key={currentIndex}
             initial={{ opacity: 0, scale: 1 }}
             animate={{
@@ -123,7 +124,11 @@ const Home = () => {
               backgroundPosition: 'center',
               // backgroundRepeat: 'no-repeat'
             }}
-          />
+          >
+            {[1, 5].includes(photos[currentIndex].id) && (
+              <img className="home-hero__full-image" src={photos[currentIndex].url} alt="" aria-hidden="true" />
+            )}
+          </motion.div>
         </AnimatePresence>
 
         {/* Photo Info Overlay */}

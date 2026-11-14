@@ -70,7 +70,7 @@ const ArtAndYou = () => {
           {/* <p style={{ color: theme.colors.textSecondary, margin: 0 }}>{photos.length} {photos.length === 1 ? 'photograph' : 'photographs'}</p> */}
         </div>
 
-        <div role="group" aria-label="Filter Art and You gallery" style={{ display: selectedAlbum ? 'none' : 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
+        <div className="gallery-category-tabs" role="group" aria-label="Filter Art and You gallery" style={{ display: selectedAlbum ? 'none' : 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
           {['All', 'Birthday', 'Event','Graduation'].map(category => (
             <button key={category} type="button" onClick={() => { setSelectedCategory(category); setSelectedAlbum(null) }} aria-pressed={selectedCategory === category} style={{ padding: '0.7rem 1.2rem', border: `1px solid ${theme.colors.accent}`, borderRadius: '3px', backgroundColor: selectedCategory === category ? theme.colors.accent : 'transparent', color: selectedCategory === category ? (theme.isDark ? '#000' : '#fff') : theme.colors.text, cursor: 'pointer', letterSpacing: '1px' }}>
               {category}
@@ -80,7 +80,7 @@ const ArtAndYou = () => {
 
         {selectedCategory === 'All' && photos.length > 0 && (
           <>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))', gap: '1.5rem' }}>
               {photos.slice(0, 4).map((photo, index) => (
                 <motion.button key={photo.id} type="button" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(index * 0.04, 0.3) }} whileHover={{ scale: 1.03 }} onClick={() => setSelectedPhoto(photo)} aria-label={`View ${photo.title}`} style={{ padding: 0, border: `1px solid ${theme.colors.border}`, borderRadius: '8px', overflow: 'hidden', cursor: 'pointer', backgroundColor: theme.colors.surface }}>
                   <img src={photo.url} alt={photo.title} style={{ display: 'block', width: '100%', aspectRatio: '4 / 3', objectFit: 'cover' }} />

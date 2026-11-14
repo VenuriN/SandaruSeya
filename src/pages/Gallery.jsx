@@ -66,7 +66,7 @@ const Gallery = () => {
       paddingTop: '120px',
       paddingBottom: '4rem'
     }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 2rem' }}>
+      <div className="gallery-page__inner" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 2rem' }}>
         {/* Page Title */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -228,7 +228,7 @@ const Gallery = () => {
           transition={{ delay: 0.4 }}
           style={{ marginBottom: '2rem' }}
         >
-          <div style={{
+          <div className="gallery-category-tabs" style={{
             display: 'flex',
             gap: '1rem',
             flexWrap: 'wrap'
@@ -298,7 +298,7 @@ const Gallery = () => {
           transition={{ delay: 0.5 }}
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
             gap: '1.5rem'
           }}
         >

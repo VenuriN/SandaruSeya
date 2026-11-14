@@ -42,7 +42,7 @@ const Services = () => {
 
         {serviceGroups.map((group, groupIndex) => (
           <section key={group.title} style={{ marginBottom: '3rem', paddingTop: '1.5rem', borderTop: `1px solid ${theme.colors.border}` }}>
-            <div style={{ color: theme.colors.accent, letterSpacing: '3px', textTransform: 'uppercase', fontSize: '2.4rem', marginBottom: '0.75rem' }}>{group.title}</div>
+            <div className="services-page__group-title" style={{ color: theme.colors.accent, letterSpacing: '3px', textTransform: 'uppercase', fontSize: '2.4rem', marginBottom: '0.75rem' }}>{group.title}</div>
             {/* <h2 style={{ color: theme.colors.text, fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', fontWeight: '400', margin: '0 0 0.75rem' }}>{group.title}</h2> */}
             <p style={{ color: theme.colors.textSecondary, width: '100%', fontSize: '1.05rem', lineHeight: 1.8, margin: '0 0 1.5rem' }}>{group.description}</p>
             <div className="services-page__grid">

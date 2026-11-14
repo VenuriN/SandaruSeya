@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext'
 
@@ -7,6 +7,19 @@ const Navbar = () => {
   const location = useLocation()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const nextThemeLabel = theme.isDark ? 'Switch to light mode' : 'Switch to dark mode'
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false)
+  }, [location.pathname])
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return undefined
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setIsMobileMenuOpen(false)
+    }
+    window.addEventListener('keydown', closeOnEscape)
+    return () => window.removeEventListener('keydown', closeOnEscape)
+  }, [isMobileMenuOpen])
 
   const ThemeIcon = () => theme.isDark ? (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -30,7 +43,7 @@ const Navbar = () => {
   ]
 
   return (
-    <nav style={{
+    <nav className="site-navbar" style={{
       position: 'fixed',
       top: 0,
       left: 0,
@@ -63,7 +76,7 @@ const Navbar = () => {
       </Link>
 
       {/* Desktop Navigation */}
-      <div style={{
+      <div className="site-navbar__desktop" style={{
         display: 'flex',
         gap: '2.5rem',
         alignItems: 'center'
@@ -110,6 +123,11 @@ const Navbar = () => {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        className="site-navbar__toggle"
+        type="button"
+        aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+        aria-expanded={isMobileMenuOpen}
+        aria-controls="mobile-navigation-menu"
         style={{
           display: 'none',
           flexDirection: 'column',
@@ -124,25 +142,28 @@ const Navbar = () => {
           width: '25px',
           height: '3px',
           backgroundColor: theme.colors.text,
-          transition: 'all 0.3s ease'
+          transition: 'all 0.3s ease',
+          transform: isMobileMenuOpen ? 'translateY(8px) rotate(45deg)' : 'none'
         }} />
         <span style={{
           width: '25px',
           height: '3px',
           backgroundColor: theme.colors.text,
-          transition: 'all 0.3s ease'
+          transition: 'all 0.3s ease',
+          opacity: isMobileMenuOpen ? 0 : 1
         }} />
         <span style={{
           width: '25px',
           height: '3px',
           backgroundColor: theme.colors.text,
-          transition: 'all 0.3s ease'
+          transition: 'all 0.3s ease',
+          transform: isMobileMenuOpen ? 'translateY(-8px) rotate(-45deg)' : 'none'
         }} />
       </button>
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div style={{
+        <div id="mobile-navigation-menu" className="site-navbar__mobile-menu" style={{
           position: 'fixed',
           top: '80px',
           left: 0,

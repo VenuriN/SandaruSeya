@@ -111,7 +111,7 @@ const Admin = () => {
       paddingTop: '120px',
       paddingBottom: '4rem'
     }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 2rem' }}>
+      <div className="admin-page__inner" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 2rem' }}>
         {/* Page Title */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -134,7 +134,7 @@ const Admin = () => {
           </p>
         </motion.div>
 
-        <div style={{
+        <div className="admin-page__layout" style={{
           display: 'grid',
           gridTemplateColumns: '1fr 2fr',
           gap: '3rem'
