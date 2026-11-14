@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../contexts/ThemeContext'
-import { compressPhoto, getUploadedPhotos, saveUploadedPhotos } from '../utils/galleryStorage'
+import { deletePhoto as deleteStoredPhoto, getUploadedPhotos, saveUploadedPhotos, uploadPhoto } from '../utils/galleryStorage'
 
 const Admin = () => {
   const theme = useTheme()
@@ -16,6 +16,8 @@ const Admin = () => {
   const [previewUrls, setPreviewUrls] = useState([])
   const [selectedFiles, setSelectedFiles] = useState([])
   const [selectedAdminAlbum, setSelectedAdminAlbum] = useState(null)
+  const [uploadProgress, setUploadProgress] = useState('')
+  const [isUploading, setIsUploading] = useState(false)
 
   useEffect(() => {
     getUploadedPhotos().then(setUploadedPhotos).catch(() => alert('Could not load saved gallery photos.'))
@@ -49,32 +51,35 @@ const Admin = () => {
       return
     }
 
+    setIsUploading(true)
     try {
       const newPhotos = []
       for (const [index, file] of selectedFiles.entries()) {
+        setUploadProgress(`Compressing and uploading photo ${index + 1} of ${selectedFiles.length}…`)
         const fileTitle = file.name.replace(/\.[^.]+$/, '')
-        newPhotos.push({
-          id: Date.now() + index,
-          url: await compressPhoto(file),
+        newPhotos.push(await uploadPhoto(file, {
           title: selectedFiles.length === 1 && uploadData.title.trim() ? uploadData.title.trim() : fileTitle,
           collection: uploadData.collection,
           category: uploadData.category,
           album: uploadData.album.trim(),
           isFavorite: uploadData.isFavorite,
           date: new Date().toLocaleDateString()
-        })
+        }))
       }
       const updatedPhotos = [...newPhotos, ...uploadedPhotos]
-      await saveUploadedPhotos(updatedPhotos)
       setUploadedPhotos(updatedPhotos)
       setSelectedAdminAlbum(uploadData.album.trim() || 'Unassigned photos')
-    } catch {
-      alert('Could not save this photo. Check available browser storage and try again.')
+    } catch (error) {
+      alert(`Could not save this photo. ${error.message || 'Check your Supabase setup and try again.'}`)
+      setUploadProgress('')
+      setIsUploading(false)
       return
     }
     setUploadData({ title: '', collection: '', category: '', album: '', isFavorite: false })
     setPreviewUrls([])
     setSelectedFiles([])
+    setUploadProgress('')
+    setIsUploading(false)
     
     // Reset file input
     const fileInput = document.getElementById('photo-upload')
@@ -83,7 +88,7 @@ const Admin = () => {
 
   const deletePhoto = async (id) => {
     const updatedPhotos = uploadedPhotos.filter(photo => photo.id !== id)
-    await saveUploadedPhotos(updatedPhotos)
+    await deleteStoredPhoto(id)
     setUploadedPhotos(updatedPhotos)
     if (selectedAdminAlbum && !updatedPhotos.some(photo => (photo.album || 'Unassigned photos') === selectedAdminAlbum)) {
       setSelectedAdminAlbum(null)
@@ -205,7 +210,7 @@ const Admin = () => {
                     <input
                       id="photo-upload"
                       type="file"
-                      accept="image/*"
+                      accept="image/jpeg,image/png,image/webp,image/gif,image/bmp,image/avif,image/heic,image/heif"
                       multiple
                       onChange={handleFileChange}
                       required
@@ -360,6 +365,7 @@ const Admin = () => {
 
                 <motion.button
                   type="submit"
+                  disabled={isUploading}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   style={{
@@ -371,13 +377,14 @@ const Admin = () => {
                     borderRadius: '4px',
                     fontSize: '1.1rem',
                     fontWeight: '600',
-                    cursor: 'pointer',
+                    cursor: isUploading ? 'wait' : 'pointer',
+                    opacity: isUploading ? 0.7 : 1,
                     transition: 'all 0.3s ease',
                     textTransform: 'uppercase',
                     letterSpacing: '1px'
                   }}
                 >
-                  Upload {selectedFiles.length > 1 ? `${selectedFiles.length} Photos` : 'Photo'}
+                  {isUploading ? uploadProgress : `Upload ${selectedFiles.length > 1 ? `${selectedFiles.length} Photos` : 'Photo'}`}
                 </motion.button>
               </form>
             </div>

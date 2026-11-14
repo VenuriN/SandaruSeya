@@ -288,7 +288,7 @@ const Contact = () => {
                   fontWeight: '600'
                 }}
               >
-                âœ“ Thank you! Your booking request has been submitted. I'll get back to you soon.
+                Thank you! Your booking request has been submitted. I'll get back to you soon.
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} style={{
@@ -587,9 +587,9 @@ const Contact = () => {
                   <a href="https://www.tiktok.com/@sandaru_seya?_r=1&_t=ZS-9AWevw1NJkv" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="Sandaru Seya TikTok" style={{ width: '48px', height: '48px', borderRadius: '50%', display: 'grid', placeItems: 'center', color: theme.colors.text, backgroundColor: theme.colors.surface, border: `1px solid ${theme.colors.border}` }}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.6 7.1a6 6 0 0 1-3.7-1.3v8.1a5.8 5.8 0 1 1-5-5.7v3.2a2.7 2.7 0 1 0 1.9 2.5V2.5h3.1c.2 2 1.6 3.6 3.7 3.9v.7Z" /></svg>
                   </a>
-                   <a href="https://web.facebook.com/pasindu.sandaruwan.39?__tn__=-UC*F" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Arts & You Facebook" style={{ width: '48px', height: '48px', borderRadius: '50%', display: 'grid', placeItems: 'center', color: theme.colors.text, backgroundColor: theme.colors.surface, border: `1px solid ${theme.colors.border}` }}>
+                   {/* <a href="https://web.facebook.com/pasindu.sandaruwan.39?__tn__=-UC*F" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Arts & You Facebook" style={{ width: '48px', height: '48px', borderRadius: '50%', display: 'grid', placeItems: 'center', color: theme.colors.text, backgroundColor: theme.colors.surface, border: `1px solid ${theme.colors.border}` }}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-8.2h2.8l.4-3.2h-3.2V7.5c0-.9.3-1.6 1.6-1.6h1.7V3.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.3H7.3v3.2h2.8V21h3.4Z" /></svg>
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </div>

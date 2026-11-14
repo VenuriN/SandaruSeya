@@ -21,5 +21,7 @@ pnpm-debug.log*
 # Editor and operating system files
 .vscode/
 .idea/
-.DS_Store
+.DS_Stores
 Thumbs.db
+
+gallery-setup.sql
