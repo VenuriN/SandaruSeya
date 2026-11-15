@@ -1,0 +1,35 @@
+{
+  "name": "sandaruseya",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VenuriN/SandaruSeya.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VenuriN/SandaruSeya/issues"
+  },
+  "homepage": "https://github.com/VenuriN/SandaruSeya#readme",
+  "dependencies": {
+    "@emailjs/browser": "^5.0.3",
+    "@supabase/supabase-js": "^2.117.3",
+    "framer-motion": "^14.1.1",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-router-dom": "^7.18.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.2",
+    "vite": "^8.3.4"
+  }
+}
