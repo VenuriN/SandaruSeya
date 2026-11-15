@@ -1,27 +1,87 @@
 # SandaruSeya
 
-## Booking email setup
+SandaruSeya is a responsive photography portfolio and booking website. Visitors can explore the photographer’s work and services, browse the gallery, and send an event enquiry. The admin area uses Supabase authentication and storage to manage gallery photos.
 
-1. Create an EmailJS email service and a booking email template in the EmailJS dashboard.
-2. Set the template recipient to your inbox. Use these form variables: `{{name}}`, `{{email}}`, `{{phone}}`, `{{eventType}}`, `{{date}}`, and `{{message}}`. Set Reply-To to `{{email}}` if you want to reply directly to the customer.
-3. Copy `.env.example` to `.env.local` and fill in the service ID, template ID, and EmailJS public key.
-4. Restart the Vite development server after changing environment variables.
+## Features
 
-The EmailJS public key and IDs are used in the browser. Do not put an EmailJS private key or other secrets in `VITE_` variables.
+- Responsive portfolio, services, gallery, and contact pages
+- Booking enquiries delivered with EmailJS
+- Admin sign-in backed by Supabase Auth
+- Gallery photo uploads stored in Supabase Storage
+- Light and dark themes
 
-## Admin login setup
+## Tech stack
 
-1. Create a Supabase project and copy its Project URL and publishable key from the project API settings.
-2. Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` to `.env.local`, then restart Vite.
-3. In Supabase Auth settings, turn off new user sign-ups. Create your admin email/password user from the Supabase dashboard.
-4. Open `/admin` and sign in with that email and password. The email address is the username.
+- React 19 and Vite
+- React Router
+- Framer Motion
+- Supabase
+- EmailJS
 
-## Gallery photo storage
+## Getting started
 
-Gallery images and their details are stored in Supabase so visitors on other devices can see them.
+### Requirements
 
-1. Configure the Supabase URL and publishable key as described above.
-2. In the Supabase Dashboard, open SQL Editor and run [`supabase/gallery-setup.sql`](supabase/gallery-setup.sql). This creates the public `gallery-photos` Storage bucket, the `gallery_photos` table, and access policies. Visitors can view photos; signed-in users can manage them.
-3. Upload photos from `/admin` while signed in. For a hosted site, set the same `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in the hosting provider's environment settings and rebuild/redeploy.
+- Node.js 20.19+ or 22.12+
+- npm
 
-Previously uploaded photos are still in the browser's local IndexedDB and are not copied automatically. Download those originals and upload them again through `/admin` after the Supabase setup.
+### Install and run
+
+```bash
+npm install
+cp .env.example .env.local
+npm run dev
+```
+
+On Windows PowerShell, copy the environment file with:
+
+```powershell
+Copy-Item .env.example .env.local
+```
+
+Set up the required environment variables in `.env.local` before using bookings, admin sign-in, or cloud gallery storage. Restart the Vite server after changing environment variables.
+
+## Environment variables
+
+| Variable | Used for |
+| --- | --- |
+| `VITE_EMAILJS_SERVICE_ID` | EmailJS email service |
+| `VITE_EMAILJS_TEMPLATE_ID` | EmailJS booking template |
+| `VITE_EMAILJS_PUBLIC_KEY` | EmailJS browser public key |
+| `VITE_SUPABASE_URL` | Supabase project URL |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase publishable key |
+
+These variables are embedded in the client-side app. Use only public/publishable credentials in `VITE_` variables; never put a Supabase `service_role` key, EmailJS private key, or other server secret here. Keep `.env.local` out of version control.
+
+## EmailJS booking setup
+
+1. Create an EmailJS service and booking email template.
+2. Set the template recipient to the inbox that should receive enquiries.
+3. Include these template variables: `{{name}}`, `{{email}}`, `{{phone}}`, `{{eventType}}`, `{{date}}`, and `{{message}}`.
+4. Optionally set Reply-To to `{{email}}` so you can reply directly to the visitor.
+5. Add the service ID, template ID, and public key to `.env.local`.
+
+## Supabase admin and gallery setup
+
+1. Create a Supabase project and add its project URL and publishable key to `.env.local`.
+2. In Supabase Auth settings, disable public sign-ups. Create the admin user from the Supabase dashboard.
+3. Run [`supabase/gallery-setup.sql`](supabase/gallery-setup.sql) in the Supabase SQL Editor. It creates the `gallery-photos` storage bucket, the `gallery_photos` table, and the access policies used by the app.
+4. Start the app and open `/admin` to sign in. Upload and manage gallery photos there.
+
+Gallery photos are stored in Supabase so they can be viewed across devices. Photos previously saved only in browser IndexedDB are not transferred automatically; download the originals and upload them again through `/admin`.
+
+## Available scripts
+
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the Vite development server |
+| `npm run build` | Create a production build in `dist/` |
+| `npm run preview` | Preview the production build locally |
+
+## Deployment
+
+Build the app with `npm run build` and deploy the generated `dist/` directory to a static hosting provider. Configure the five environment variables in the hosting provider’s build settings, then rebuild and deploy. Configure the host to serve the app entry point for client-side routes such as `/admin`.
+
+## Repository
+
+[github.com/VenuriN/SandaruSeya](https://github.com/VenuriN/SandaruSeya)

@@ -148,7 +148,7 @@ const ArtAndYou = () => {
           <a href="https://wa.me/94712299634?text=Hi%21%20I%27d%20like%20to%20ask%20about%20birthday%20or%20event%20photography." target="_blank" rel="noopener noreferrer" style={{ padding: '0.9rem 1.4rem', borderRadius: '3px', backgroundColor: '#25D366', color: '#fff', textDecoration: 'none', fontWeight: '600' }}>Chat on WhatsApp</a>
           <a href="tel:+94712299634" style={{ padding: '0.9rem 1.4rem', borderRadius: '3px', border: `1px solid ${theme.colors.border}`, color: theme.colors.text, textDecoration: 'none' }}>Call 071 229 9634</a>
           <a href="mailto:pasindusandaruwan29@gmail.com" style={{ padding: '0.9rem 1.4rem', borderRadius: '3px', border: `1px solid ${theme.colors.border}`, color: theme.colors.text, textDecoration: 'none' }}>Send an email</a>
-          <a href="https://web.facebook.com/pasindu.sandaruwan.39" target="_blank" rel="noopener noreferrer" aria-label="Arts & You Facebook" style={{ padding: '0.9rem 1.4rem', borderRadius: '3px', border: `1px solid ${theme.colors.border}`, color: theme.colors.text, textDecoration: 'none' }}>Facebook</a>
+          <a href="https://www.facebook.com/profile.php?id=100092629110136" target="_blank" rel="noopener noreferrer" aria-label="Arts & You Facebook" style={{ padding: '0.9rem 1.4rem', borderRadius: '3px', border: `1px solid ${theme.colors.border}`, color: theme.colors.text, textDecoration: 'none' }}>Facebook</a>
         </div>
         <Link to="/contact" style={{ display: 'inline-block', marginTop: '1.5rem', color: theme.colors.textSecondary }}>Visit the full Contact page →</Link>
       </section>
