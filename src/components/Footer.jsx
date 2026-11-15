@@ -64,7 +64,7 @@ const Footer = () => {
                 <circle cx="17.5" cy="6.8" r="1.2" fill="currentColor" />
               </svg>
             </a>
-            <a className="site-footer__social-link" href="https://web.facebook.com/pasindu.sandaruwan.39" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Sandaru Seya Facebook" style={{ color: colors.text }}>
+            <a className="site-footer__social-link" href="https://www.facebook.com/profile.php?id=100063649776101" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Sandaru Seya Facebook" style={{ color: colors.text }}>
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path fill="currentColor" d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.027 1.792-4.7 4.533-4.7 1.312 0 2.686.236 2.686.236v2.953h-1.513c-1.49 0-1.955.93-1.955 1.885v2.262h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z" />
               </svg>

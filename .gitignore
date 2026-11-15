@@ -24,3 +24,4 @@ pnpm-debug.log*
 .DS_Stores
 Thumbs.db
 
+.vercel

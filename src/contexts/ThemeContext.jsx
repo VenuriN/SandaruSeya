@@ -1,16 +1,16 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 
 const defaultTheme = {
-  isDark: false,
+  isDark: true,
   toggleTheme: () => {},
   colors: {
-    background: '#FAFAF5',
-    surface: '#FFFFFF',
-    text: '#1A1A1A',
-    textSecondary: '#666666',
+    background: '#0A0A0A',
+    surface: '#1A1A1A',
+    text: '#FFFFFF',
+    textSecondary: '#CCCCCC',
     accent: '#C9A962',
     accentLight: '#E8D5A3',
-    border: '#E0E0E0'
+    border: '#333333'
   }
 }
 
@@ -21,16 +21,16 @@ export const useTheme = () => {
   if (!context) {
     console.warn('useTheme must be used within a ThemeProvider')
     return {
-      isDark: false,
+      isDark: true,
       toggleTheme: () => {},
       colors: {
-        background: '#FAFAF5',
-        surface: '#FFFFFF',
-        text: '#1A1A1A',
-        textSecondary: '#666666',
+        background: '#0A0A0A',
+        surface: '#1A1A1A',
+        text: '#FFFFFF',
+        textSecondary: '#CCCCCC',
         accent: '#C9A962',
         accentLight: '#E8D5A3',
-        border: '#E0E0E0'
+        border: '#333333'
       }
     }
   }
@@ -38,13 +38,12 @@ export const useTheme = () => {
 }
 
 export const ThemeProvider = ({ children }) => {
-  const [isDark, setIsDark] = useState(false)
+  const [isDark, setIsDark] = useState(() => {
+    const savedTheme = localStorage.getItem('theme')
+    return savedTheme ? savedTheme === 'dark' : true
+  })
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme')
-    if (savedTheme) {
-      setIsDark(savedTheme === 'dark')
-    }
   }, [])
 
   const toggleTheme = () => {

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 const Home = () => {
   const theme = useTheme()
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 768px)').matches)
 
   // Sample photos 
   const photos = [
@@ -64,11 +65,18 @@ const Home = () => {
       id: 8,
       // url: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920',
       url: '/Hero/collage-maker.png',
-      title: 'A Forever in Three Frames',
+      title: 'A Forever in Frames',
       category: 'Wedding'
     }
 
   ]
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 768px)')
+    const updateIsMobile = (event) => setIsMobile(event.matches)
+    mediaQuery.addEventListener('change', updateIsMobile)
+    return () => mediaQuery.removeEventListener('change', updateIsMobile)
+  }, [])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -85,6 +93,15 @@ const Home = () => {
     setCurrentIndex((prev) => (prev - 1 + photos.length) % photos.length)
   }
 
+  const getDisplayedPhotoIndex = (index) => {
+    if (!isMobile) return index
+    if (index === 0) return 2
+    if (index === 2) return 0
+    return index
+  }
+
+  const displayedPhoto = photos[getDisplayedPhotoIndex(currentIndex)]
+
   return (
     <div style={{
       minHeight: '100vh',
@@ -100,12 +117,12 @@ const Home = () => {
       }}>
         <AnimatePresence mode='wait'>
           <motion.div
-            className={`home-hero__slide home-hero__slide--${photos[currentIndex].id}`}
+            className={`home-hero__slide home-hero__slide--${displayedPhoto.id}`}
             key={currentIndex}
             initial={{ opacity: 0, scale: 1 }}
             animate={{
               opacity: 1,
-              scale: photos[currentIndex].url === '/Hero/x.jpg' ? [1.2, 1.1, 1] : [1, 1.1, 1]
+              scale: displayedPhoto.url === '/Hero/x.jpg' ? [1.2, 1.1, 1] : [1, 1.1, 1]
             }}
             exit={{ opacity: 0 }}
             transition={{
@@ -119,14 +136,14 @@ const Home = () => {
             style={{
               position: 'absolute',
               inset: 0,
-              backgroundImage: `url(${photos[currentIndex].url})`,
-              backgroundSize: photos[currentIndex].url === '/Hero/p.jpg' || photos[currentIndex].url === '/Hero/q.jpeg' ? 'contain' : 'cover',
+              backgroundImage: `url(${displayedPhoto.url})`,
+              backgroundSize: displayedPhoto.url === '/Hero/p.jpg' || displayedPhoto.url === '/Hero/q.jpeg' ? 'contain' : 'cover',
               backgroundPosition: 'center',
               // backgroundRepeat: 'no-repeat'
             }}
           >
-            {[1, 5].includes(photos[currentIndex].id) && (
-              <img className="home-hero__full-image" src={photos[currentIndex].url} alt="" aria-hidden="true" />
+            {[1, 5].includes(displayedPhoto.id) && (
+              <img className="home-hero__full-image" src={displayedPhoto.url} alt="" aria-hidden="true" />
             )}
           </motion.div>
         </AnimatePresence>
@@ -157,7 +174,7 @@ const Home = () => {
               color: theme.colors.accent
             }}
           >
-            {photos[currentIndex].category}
+            {displayedPhoto.category}
           </motion.div>
           <motion.h1
             initial={{ opacity: 0 }}
@@ -170,7 +187,7 @@ const Home = () => {
               lineHeight: 1.2
             }}
           >
-            {photos[currentIndex].title}
+            {displayedPhoto.title}
           </motion.h1>
           <motion.div
             initial={{ opacity: 0 }}
