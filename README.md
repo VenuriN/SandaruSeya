@@ -47,6 +47,7 @@ Set up the required environment variables in `.env.local` before using bookings,
 | --- | --- |
 | `VITE_EMAILJS_SERVICE_ID` | EmailJS email service |
 | `VITE_EMAILJS_TEMPLATE_ID` | EmailJS booking template |
+| `VITE_EMAILJS_CONFIRMATION_TEMPLATE_ID` | EmailJS customer confirmation template |
 | `VITE_EMAILJS_PUBLIC_KEY` | EmailJS browser public key |
 | `VITE_SUPABASE_URL` | Supabase project URL |
 | `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase publishable key |
@@ -60,6 +61,10 @@ These variables are embedded in the client-side app. Use only public/publishable
 3. Include these template variables: `{{name}}`, `{{email}}`, `{{phone}}`, `{{eventType}}`, `{{date}}`, and `{{message}}`.
 4. Optionally set Reply-To to `{{email}}` so you can reply directly to the visitor.
 5. Add the service ID, template ID, and public key to `.env.local`.
+
+### Customer booking confirmation
+
+Create a second EmailJS template for the automatic reply to the person who booked. Set its **To Email** field to `{{to_email}}`, and use `{{to_name}}` and `{{reply_message}}` in the email. You can also include booking details with `{{eventType}}`, `{{date}}`, `{{phone}}`, and `{{message}}`. Set `VITE_EMAILJS_CONFIRMATION_TEMPLATE_ID` to this template's ID in `.env.local` and in Vercel's project environment variables, then redeploy. The website sends this confirmation after it successfully sends the booking enquiry to the business inbox.
 
 ## Supabase admin and gallery setup
 

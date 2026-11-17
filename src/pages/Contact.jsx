@@ -37,7 +37,12 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    const { VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY } = import.meta.env
+    const {
+      VITE_EMAILJS_SERVICE_ID,
+      VITE_EMAILJS_TEMPLATE_ID,
+      VITE_EMAILJS_CONFIRMATION_TEMPLATE_ID,
+      VITE_EMAILJS_PUBLIC_KEY
+    } = import.meta.env
     if (!VITE_EMAILJS_SERVICE_ID || !VITE_EMAILJS_TEMPLATE_ID || !VITE_EMAILJS_PUBLIC_KEY) {
       setSubmitError('Booking email is not configured yet. Please contact us by WhatsApp or email.')
       return
@@ -52,6 +57,34 @@ const Contact = () => {
         e.currentTarget,
         { publicKey: VITE_EMAILJS_PUBLIC_KEY }
       )
+
+      // A separate EmailJS template sends the confirmation to the customer.
+      // Keep the booking successful even if the optional confirmation template
+      // has not been configured yet.
+      if (VITE_EMAILJS_CONFIRMATION_TEMPLATE_ID) {
+        try {
+          await emailjs.send(
+            VITE_EMAILJS_SERVICE_ID,
+            VITE_EMAILJS_CONFIRMATION_TEMPLATE_ID,
+            {
+              to_email: formData.email,
+              to_name: formData.name,
+              name: formData.name,
+              email: formData.email,
+              phone: formData.phone || 'Not provided',
+              eventType: formData.eventType,
+              date: formData.date || 'Not specified',
+              message: formData.message,
+              reply_message: `Hi ${formData.name}, thank you for your booking request. We have received it and will contact you as soon as possible.\n\nSandaru Seya\nsandaruseya.com.lk`
+            },
+            { publicKey: VITE_EMAILJS_PUBLIC_KEY }
+          )
+        } catch {
+          setSubmitError('Your booking was received, but the confirmation email could not be sent. We will contact you soon.')
+        }
+      } else {
+        setSubmitError('Your booking was received. The automatic customer confirmation email still needs to be configured.')
+      }
       setSubmitted(true)
       setFormData({ name: '', email: '', phone: '', eventType: '', date: '', message: '' })
     } catch {
@@ -288,7 +321,7 @@ const Contact = () => {
                   fontWeight: '600'
                 }}
               >
-                Thank you! Your booking request has been submitted. I'll get back to you soon.
+                {submitError || "Thank you! Your booking request has been submitted. I'll get back to you soon."}
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} style={{
