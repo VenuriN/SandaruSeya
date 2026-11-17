@@ -1,4 +1,4 @@
-# SandaruSeya
+# SandaruSeya Photogrphy
 
 SandaruSeya is a responsive photography portfolio and booking website. Visitors can explore the photographer’s work and services, browse the gallery, and send an event enquiry. The admin area uses Supabase authentication and storage to manage gallery photos.
 
