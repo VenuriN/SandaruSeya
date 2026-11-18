@@ -102,7 +102,7 @@ const Contact = () => {
     }
   }
 
-  const whatsappNumber = '94712299634'
+  const whatsappNumber = '94702003422'
   const whatsappMessage = encodeURIComponent('Hi! I would like to inquire about photography services.')
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`
 
