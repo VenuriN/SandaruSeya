@@ -80,6 +80,24 @@ export const deletePhoto = async (id) => {
   if (storageError) throw storageError
 }
 
+export const deleteAlbum = async (albumName, photos) => {
+  const client = requireSupabase()
+  const photoIds = photos.map(photo => photo.id)
+  if (!photoIds.length) return
+
+  const { data: storedPhotos, error: readError } = await client.from(TABLE).select('id, storage_path').in('id', photoIds)
+  if (readError) throw readError
+
+  const { error: deleteError } = await client.from(TABLE).delete().in('id', photoIds)
+  if (deleteError) throw deleteError
+
+  const paths = storedPhotos.map(photo => photo.storage_path).filter(Boolean)
+  if (paths.length) {
+    const { error: storageError } = await client.storage.from(BUCKET).remove(paths)
+    if (storageError) throw storageError
+  }
+}
+
 export const saveUploadedPhotos = async (photos) => {
   const client = requireSupabase()
   const { error } = await Promise.all(photos.map(photo =>

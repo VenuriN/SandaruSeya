@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../contexts/ThemeContext'
-import { deletePhoto as deleteStoredPhoto, getUploadedPhotos, saveUploadedPhotos, uploadPhoto } from '../utils/galleryStorage'
+import { deleteAlbum as deleteStoredAlbum, deletePhoto as deleteStoredPhoto, getUploadedPhotos, saveUploadedPhotos, uploadPhoto } from '../utils/galleryStorage'
 
 const Admin = () => {
   const theme = useTheme()
@@ -24,7 +24,7 @@ const Admin = () => {
   }, [])
 
   const collectionCategories = {
-    SandaruSeya: ['Wedding', 'Preshoot', 'Commercial'],
+    SandaruSeya: ['Wedding', 'Preshoot', 'Commercial', 'Thankyou card'],
     'Arts & You': ['Birthday', 'Event','Graduation']
   }
   const categories = collectionCategories[uploadData.collection] || []
@@ -92,6 +92,21 @@ const Admin = () => {
     setUploadedPhotos(updatedPhotos)
     if (selectedAdminAlbum && !updatedPhotos.some(photo => (photo.album || 'Unassigned photos') === selectedAdminAlbum)) {
       setSelectedAdminAlbum(null)
+    }
+  }
+
+  const deleteAlbum = async (album) => {
+    const albumPhotos = album.photos
+    const confirmed = window.confirm(`Delete "${album.name}" and all ${albumPhotos.length} ${albumPhotos.length === 1 ? 'photo' : 'photos'} in it? This cannot be undone.`)
+    if (!confirmed) return
+
+    try {
+      await deleteStoredAlbum(album.name, albumPhotos)
+      const deletedIds = new Set(albumPhotos.map(photo => photo.id))
+      setUploadedPhotos(current => current.filter(photo => !deletedIds.has(photo.id)))
+      setSelectedAdminAlbum(null)
+    } catch (error) {
+      alert(`Could not delete this album. ${error.message || 'Please try again.'}`)
     }
   }
 
@@ -422,12 +437,12 @@ const Admin = () => {
             ) : selectedAdminAlbum === null ? (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1.5rem' }}>
                 {adminAlbums.map(album => (
+                  <div key={album.name} style={{ position: 'relative' }}>
                   <motion.button
-                    key={album.name}
                     type="button"
                     whileHover={{ y: -4 }}
                     onClick={() => setSelectedAdminAlbum(album.name)}
-                    style={{ padding: 0, border: `1px solid ${theme.colors.border}`, borderRadius: '8px', overflow: 'hidden', cursor: 'pointer', backgroundColor: theme.colors.surface, textAlign: 'left', color: theme.colors.text }}
+                    style={{ display: 'block', width: '100%', padding: 0, border: `1px solid ${theme.colors.border}`, borderRadius: '8px', overflow: 'hidden', cursor: 'pointer', backgroundColor: theme.colors.surface, textAlign: 'left', color: theme.colors.text }}
                   >
                     <img src={album.photos[0].url} alt={album.name} style={{ display: 'block', width: '100%', height: '180px', objectFit: 'cover' }} />
                     <div style={{ padding: '1rem' }}>
@@ -435,6 +450,15 @@ const Admin = () => {
                       <div style={{ color: theme.colors.textSecondary, fontSize: '0.9rem' }}>{album.photos.length} {album.photos.length === 1 ? 'photo' : 'photos'}</div>
                     </div>
                   </motion.button>
+                  <button
+                    type="button"
+                    onClick={(event) => { event.stopPropagation(); deleteAlbum(album) }}
+                    aria-label={`Delete ${album.name} album`}
+                    style={{ position: 'absolute', top: '0.5rem', right: '0.5rem', padding: '0.45rem 0.65rem', backgroundColor: '#e74c3c', color: '#FFFFFF', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: '600' }}
+                  >
+                    Delete album
+                  </button>
+                  </div>
                 ))}
               </div>
             ) : (

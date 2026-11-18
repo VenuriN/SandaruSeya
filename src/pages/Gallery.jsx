@@ -13,7 +13,7 @@ const Gallery = () => {
   const [selectedPhoto, setSelectedPhoto] = useState(null)
   const [uploadedPhotos, setUploadedPhotos] = useState([])
 
-  const categories = isArtsYou ? ['All', 'Birthday', 'Graduation', 'Event'] : ['All', 'Wedding', 'Preshoot', 'Commercial']
+  const categories = isArtsYou ? ['All', 'Birthday', 'Graduation', 'Event'] : ['All', 'Wedding', 'Preshoot', 'Commercial', 'Thankyou card']
 
   useEffect(() => {
     getUploadedPhotos().then(setUploadedPhotos).catch(() => alert('Could not load gallery photos.'))
@@ -45,7 +45,6 @@ const Gallery = () => {
       album,
       url: photos[0].url,
       title: album,
-      date: photos[0].date || '',
       category: photos[0].category
     }
   })
@@ -148,7 +147,6 @@ const Gallery = () => {
                   color: '#FFFFFF'
                 }}>
                   <div style={{ fontSize: '0.9rem', fontWeight: '600' }}>{story.title}</div>
-                  <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>{story.date}</div>
                 </div>
               </motion.div>
             ))}

@@ -42,15 +42,14 @@ const Footer = () => {
 
         <div className="site-footer__column">
           <h2 style={{ color: colors.text }}>Contact</h2>
-          <a href="tel:+94712299634" style={{ color: colors.textSecondary }}>
-            071 229 9634
+          <span style={{ color: colors.textSecondary }}>
+            <a href="tel:+94712299634" style={{ color: 'inherit' }}>071 229 9634</a>
+            {' / '}
+            <a href="tel:+94702003422" style={{ color: 'inherit' }}>070 200 3422</a>
+          </span>
+          <a href="mailto:sandaruseya1@gmail.com" style={{ color: colors.textSecondary }}>
+            sandaruseya1@gmail.com
           </a>
-          <a href="mailto:pasindusandaruwan29@gmail.com" style={{ color: colors.textSecondary }}>
-            pasindusandaruwan29@gmail.com
-          </a>
-          {/* <a href="tel:+94712299634" style={{ color: colors.textSecondary }}>
-            071 229 9634
-          </a> */}
           <span style={{ color: colors.textSecondary }}>169/C, Oruwalpitiya Road, Athurugiriya, Colombo, Sri Lanka, 10150</span>
         </div>
 

@@ -185,6 +185,8 @@ const Contact = () => {
                     fontWeight: '500'
                   }}>
                     <a href="tel:+94712299634" style={{ color: 'inherit', textDecoration: 'none' }}>071 229 9634</a>
+                    {' / '}
+                    <a href="tel:+94702003422" style={{ color: 'inherit', textDecoration: 'none' }}>070 200 3422</a>
                   </div>
                 </div>
               </div>
@@ -224,7 +226,7 @@ const Contact = () => {
                     color: theme.colors.text,
                     fontWeight: '500'
                   }}>
-                    <a href="mailto:pasindusandaruwan29@gmail.com" style={{ color: 'inherit', textDecoration: 'none' }}>pasindusandaruwan29@gmail.com</a>
+                    <a href="mailto:sandaruseya1@gmail.com" style={{ color: 'inherit', textDecoration: 'none' }}>sandaruseya1@gmail.com</a>
                   </div>
                 </div>
               </div>
