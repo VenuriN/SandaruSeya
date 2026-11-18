@@ -18,6 +18,14 @@ const Contact = () => {
   const [submitError, setSubmitError] = useState('')
   const [isMobile, setIsMobile] = useState(false)
 
+  const earliestPreferredDate = new Date()
+  earliestPreferredDate.setDate(earliestPreferredDate.getDate() + 3)
+  const minPreferredDate = [
+    earliestPreferredDate.getFullYear(),
+    String(earliestPreferredDate.getMonth() + 1).padStart(2, '0'),
+    String(earliestPreferredDate.getDate()).padStart(2, '0')
+  ].join('-')
+
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768)
@@ -504,6 +512,7 @@ const Contact = () => {
                   <input
                     type="date"
                     name="date"
+                    min={minPreferredDate}
                     value={formData.date}
                     onChange={handleChange}
                     style={{
